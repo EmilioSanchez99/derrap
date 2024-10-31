@@ -39,6 +39,7 @@ public class VentanaMeca extends JFrame {
 					
 				} catch (Exception e) {
 					e.printStackTrace();
+				
 				}
 			}
 		});

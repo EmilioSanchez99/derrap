@@ -90,11 +90,14 @@ public class VentanaAdmin extends JFrame {
 		lblContrasea.setFont(new Font("Verdana", Font.BOLD, 28));
 		lblContrasea.setBounds(269, 234, 605, 168);
 		getContentPane().add(lblContrasea);
+		
+		JLabel lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2.setBounds(309, 414, 45, 13);
+		getContentPane().add(lblNewLabel_2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		
 		
 	}
-
 }
