@@ -23,7 +23,7 @@ public class ConectorBD {
 	private static final String CONTROLADOR="com.mysql.jdbc.Driver";
 	private static final String URL="jdbc:mysql://localhost:3306/derrap?useSSL=false";
 	private static final String USUARIO="root";
-	private static final String CLAVE="carlos";
+	private static final String CLAVE="1234";
 	
 //	private static final String URL="jdbc:mysql://bt6vnfhsbznrtte5otzn-mysql.services.clever-cloud.com:3306/bt6vnfhsbznrtte5otzn?useSSL=false";
 //	private static final String USUARIO="uybh0n0nbxfzycii";

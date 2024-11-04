@@ -57,7 +57,7 @@ public class Login extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(null);
-		this.setUndecorated(true);
+		this.setUndecorated(false);
 		this.setLocationRelativeTo(null);
 
         
