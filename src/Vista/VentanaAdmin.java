@@ -1,5 +1,6 @@
 package Vista;
 
+
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
@@ -67,7 +68,7 @@ public class VentanaAdmin extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(null);
-		this.setUndecorated(false);
+		
 		this.setLocationRelativeTo(null);
 
 		
@@ -78,45 +79,22 @@ public class VentanaAdmin extends JFrame {
 		Color azulBarra = new Color (0x0F296B);
 		Color azulFondo = new Color (0xA2CED8);
 		
-		
-		Panel panel = new Panel();
-		panel.setBounds(0, 0, 1200, 100);
-		getContentPane().add(panel);
-		
-		panel.setBackground(azulBarra);
-		panel.setLayout(null);
-		
-		JLabel lblNewLabel_1 = new JLabel("DERRAP");
-		lblNewLabel_1.setForeground(new Color(162, 206, 216));
-		lblNewLabel_1.setFont(new Font("Verdana", Font.BOLD, 23));
-		lblNewLabel_1.setBounds(114, 34, 164, 55);
-		panel.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(23, 11, 107, 78);
-		panel.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\coche40x40.png"));
-		
-		Panel panel_1 = new Panel();
-		panel_1.setBounds(0, 618, 1200, 100);
-		getContentPane().add(panel_1);
-		panel_1.setBackground(azulBarra);
-		
 		Panel panel_2 = new Panel();
-		panel_2.setBackground(new Color(192, 192, 192));
-		panel_2.setBounds(0, 96, 139, 526);
+		panel_2.setBackground(new Color(15, 41, 107));
+		panel_2.setBounds(0, 0, 139, 763);
 		
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
 		JMenuBar mbCliente = new JMenuBar();
+		mbCliente.setForeground(new Color(162, 206, 216));
 		mbCliente.setBackground(new Color(255, 255, 255));
 		mbCliente.setToolTipText("Cliente");
-		mbCliente.setBounds(0, 22, 136, 49);
+		mbCliente.setBounds(0, 76, 136, 49);
 		panel_2.add(mbCliente);
 		
 		JMenu mnCliente = new JMenu("Cliente");
-		mnCliente.setIcon(new ImageIcon("../imagenes/android.png"));
+		mnCliente.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\usuario.png"));
 		mnCliente.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		mnCliente.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		mnCliente.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -153,11 +131,11 @@ public class VentanaAdmin extends JFrame {
 		
 		JMenuBar mbMecanico = new JMenuBar();
 		mbMecanico.setToolTipText("Cliente");
-		mbMecanico.setBounds(0, 71, 136, 49);
+		mbMecanico.setBounds(0, 174, 136, 49);
 		panel_2.add(mbMecanico);
 		
 		JMenu mnMecanico = new JMenu("Mecánico");
-		mnMecanico.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\menulateral\\SlidingMenu\\Dashboard_1\\src\\img\\android.png"));
+		mnMecanico.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\mecanico.png"));
 		mnMecanico.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		mnMecanico.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		mnMecanico.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -169,22 +147,31 @@ public class VentanaAdmin extends JFrame {
 		JMenuItem btnNuevoMecanico = new JMenuItem("Nuevo Mecánico");
 		mnMecanico.add(btnNuevoMecanico);
 		
+		JSeparator separator_3 = new JSeparator();
+		mnMecanico.add(separator_3);
+		
 		JMenuItem btnModificarMecanico = new JMenuItem("Modificar Mecánico");
 		mnMecanico.add(btnModificarMecanico);
 		
+		JSeparator separator_4 = new JSeparator();
+		mnMecanico.add(separator_4);
+		
 		JMenuItem btnBuscarMecanico = new JMenuItem("Buscar Mecánico");
 		mnMecanico.add(btnBuscarMecanico);
+		
+		JSeparator separator_5 = new JSeparator();
+		mnMecanico.add(separator_5);
 		
 		JMenuItem btnEliminarMecanico = new JMenuItem("Eliminar Mecánico");
 		mnMecanico.add(btnEliminarMecanico);
 		
 		JMenuBar mbVehiculo = new JMenuBar();
 		mbVehiculo.setToolTipText("");
-		mbVehiculo.setBounds(0, 120, 136, 49);
+		mbVehiculo.setBounds(0, 272, 136, 49);
 		panel_2.add(mbVehiculo);
 		
 		JMenu mnVehiculo = new JMenu("Vehículo");
-		mnVehiculo.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\menulateral\\SlidingMenu\\Dashboard_1\\src\\img\\android.png"));
+		mnVehiculo.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\vehiculo.png"));
 		mnVehiculo.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		mnVehiculo.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		mnVehiculo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -196,23 +183,32 @@ public class VentanaAdmin extends JFrame {
 		JMenuItem btnNuevoVehiculo = new JMenuItem("Nuevo Vehículo");
 		mnVehiculo.add(btnNuevoVehiculo);
 		
+		JSeparator separator_6 = new JSeparator();
+		mnVehiculo.add(separator_6);
+		
 		JMenuItem btnModificarVehiculo = new JMenuItem("Modificar  Vehículo");
 		mnVehiculo.add(btnModificarVehiculo);
 		
+		JSeparator separator_7 = new JSeparator();
+		mnVehiculo.add(separator_7);
+		
 		JMenuItem btnBuscarVehiculo = new JMenuItem("Buscar Vehículo");
 		mnVehiculo.add(btnBuscarVehiculo);
+		
+		JSeparator separator_8 = new JSeparator();
+		mnVehiculo.add(separator_8);
 		
 		JMenuItem btnEliminarVehiculo = new JMenuItem("Eliminar Vehículo");
 		mnVehiculo.add(btnEliminarVehiculo);
 		
 		JMenuBar mbProveedor = new JMenuBar();
 		mbProveedor.setToolTipText("Proveedor");
-		mbProveedor.setBounds(0, 168, 136, 49);
+		mbProveedor.setBounds(0, 368, 136, 49);
 		panel_2.add(mbProveedor);
 		
 		JMenu mnProveedor = new JMenu("Proveedor");
 		mnProveedor.setMaximumSize(new Dimension(5000, 32767));
-		mnProveedor.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\menulateral\\SlidingMenu\\Dashboard_1\\src\\img\\android.png"));
+		mnProveedor.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\proveedor.png"));
 		mnProveedor.setHorizontalAlignment(SwingConstants.RIGHT);
 		mnProveedor.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		mnProveedor.setBorder(UIManager.getBorder("Button.border"));
@@ -222,23 +218,32 @@ public class VentanaAdmin extends JFrame {
 		JMenuItem btnNuevoProveedor = new JMenuItem("Nuevo Proveedor"); 
 		mnProveedor.add(btnNuevoProveedor);
 		
+		JSeparator separator_9 = new JSeparator();
+		mnProveedor.add(separator_9);
+		
 		JMenuItem btnModificarProveedor = new JMenuItem("Modificar Proveedor");
 		mnProveedor.add(btnModificarProveedor);
 		
+		JSeparator separator_10 = new JSeparator();
+		mnProveedor.add(separator_10);
+		
 		JMenuItem btnBuscarProveedor = new JMenuItem("Buscar Proveedor");
 		mnProveedor.add(btnBuscarProveedor);
+		
+		JSeparator separator_11 = new JSeparator();
+		mnProveedor.add(separator_11);
 		
 		JMenuItem btnEliminarProveedor = new JMenuItem("Eliminar Proveedor");
 		mnProveedor.add(btnEliminarProveedor);
 		
 		JMenuBar mbCita = new JMenuBar();
 		mbCita.setToolTipText("Cita");
-		mbCita.setBounds(0, 213, 136, 49);
+		mbCita.setBounds(0, 458, 136, 49);
 		panel_2.add(mbCita);
 		
 		JMenu mnCita = new JMenu("Cita");
 		mnCita.setMaximumSize(new Dimension(5000, 32767));
-		mnCita.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\menulateral\\SlidingMenu\\Dashboard_1\\src\\img\\android.png"));
+		mnCita.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\citas.png"));
 		mnCita.setHorizontalAlignment(SwingConstants.RIGHT);
 		mnCita.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		mnCita.setBorder(UIManager.getBorder("Button.border"));
@@ -248,14 +253,34 @@ public class VentanaAdmin extends JFrame {
 		JMenuItem btnNuevoCita = new JMenuItem("Nueva Cita");
 		mnCita.add(btnNuevoCita);
 		
+		JSeparator separator_12 = new JSeparator();
+		mnCita.add(separator_12);
+		
 		JMenuItem btnModificarCita = new JMenuItem("Modificar Cita");
 		mnCita.add(btnModificarCita);
+		
+		JSeparator separator_13 = new JSeparator();
+		mnCita.add(separator_13);
 		
 		JMenuItem btnBuscarCita = new JMenuItem("Buscar Cita");
 		mnCita.add(btnBuscarCita);
 		
+		JSeparator separator_14 = new JSeparator();
+		mnCita.add(separator_14);
+		
 		JMenuItem btnEliminarCita = new JMenuItem("Eliminar Cita");
 		mnCita.add(btnEliminarCita);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setBounds(10, 0, 126, 76);
+		panel_2.add(lblNewLabel);
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (3).png"));
+		lblNewLabel_1.setBounds(402, 229, 529, 157);
+		getContentPane().add(lblNewLabel_1);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		

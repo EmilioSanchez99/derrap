@@ -1,5 +1,6 @@
 package Vista;
 
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
@@ -63,7 +64,7 @@ public class VentanaMeca extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(null);
-		this.setUndecorated(false);
+		
 		this.setLocationRelativeTo(null);
 
 		
@@ -74,33 +75,9 @@ public class VentanaMeca extends JFrame {
 		Color azulBarra = new Color (0x0F296B);
 		Color azulFondo = new Color (0xA2CED8);
 		
-		
-		Panel panel = new Panel();
-		panel.setBounds(0, 0, 1200, 100);
-		getContentPane().add(panel);
-		
-		panel.setBackground(azulBarra);
-		panel.setLayout(null);
-		
-		JLabel lblNewLabel_1 = new JLabel("DERRAP");
-		lblNewLabel_1.setForeground(new Color(162, 206, 216));
-		lblNewLabel_1.setFont(new Font("Verdana", Font.BOLD, 23));
-		lblNewLabel_1.setBounds(114, 34, 164, 55);
-		panel.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(23, 11, 107, 78);
-		panel.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\coche40x40.png"));
-		
-		Panel panel_1 = new Panel();
-		panel_1.setBounds(0, 618, 1200, 100);
-		getContentPane().add(panel_1);
-		panel_1.setBackground(azulBarra);
-		
 		Panel panel_2 = new Panel();
-		panel_2.setBackground(new Color(192, 192, 192));
-		panel_2.setBounds(0, 96, 139, 526);
+		panel_2.setBackground(new Color(15, 41, 107));
+		panel_2.setBounds(0, 0, 139, 700);
 		
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
@@ -108,11 +85,13 @@ public class VentanaMeca extends JFrame {
 		JMenuBar mbCliente = new JMenuBar();
 		mbCliente.setBackground(new Color(255, 255, 255));
 		mbCliente.setToolTipText("Cliente");
-		mbCliente.setBounds(0, 71, 136, 49);
+		mbCliente.setBounds(0, 173, 136, 49);
 		panel_2.add(mbCliente);
 		
 		JMenu mnCliente = new JMenu("Cliente");
-		mnCliente.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\menulateral\\SlidingMenu\\Dashboard_1\\src\\img\\android.png"));
+		mnCliente.setSelectedIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\logoDERRAP\\usuario.png"));
+		
+		mnCliente.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\usuario.png"));
 		mnCliente.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		mnCliente.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		mnCliente.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -152,11 +131,11 @@ public class VentanaMeca extends JFrame {
 		
 		JMenuBar mbVehiculo = new JMenuBar();
 		mbVehiculo.setToolTipText("");
-		mbVehiculo.setBounds(0, 120, 136, 49);
+		mbVehiculo.setBounds(0, 271, 136, 49);
 		panel_2.add(mbVehiculo);
 		
 		JMenu mnVehiculo = new JMenu("Vehículo");
-		mnVehiculo.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\menulateral\\SlidingMenu\\Dashboard_1\\src\\img\\android.png"));
+		mnVehiculo.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\vehiculo.png"));
 		mnVehiculo.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		mnVehiculo.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		mnVehiculo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -168,23 +147,32 @@ public class VentanaMeca extends JFrame {
 		JMenuItem btnNuevoVehiculo = new JMenuItem("Nuevo Vehículo");
 		mnVehiculo.add(btnNuevoVehiculo);
 		
+		JSeparator separator_3 = new JSeparator();
+		mnVehiculo.add(separator_3);
+		
 		JMenuItem btnModificarVehiculo = new JMenuItem("Modificar  Vehículo");
 		mnVehiculo.add(btnModificarVehiculo);
 		
+		JSeparator separator_4 = new JSeparator();
+		mnVehiculo.add(separator_4);
+		
 		JMenuItem btnBuscarVehiculo = new JMenuItem("Buscar Vehículo");
 		mnVehiculo.add(btnBuscarVehiculo);
+		
+		JSeparator separator_5 = new JSeparator();
+		mnVehiculo.add(separator_5);
 		
 		JMenuItem btnEliminarVehiculo = new JMenuItem("Eliminar Vehículo");
 		mnVehiculo.add(btnEliminarVehiculo);
 		
 		JMenuBar mbCita = new JMenuBar();
 		mbCita.setToolTipText("Cita");
-		mbCita.setBounds(0, 170, 136, 49);
+		mbCita.setBounds(0, 371, 136, 49);
 		panel_2.add(mbCita);
 		
 		JMenu mnCita = new JMenu("Cita");
 		mnCita.setMaximumSize(new Dimension(5000, 32767));
-		mnCita.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\menulateral\\SlidingMenu\\Dashboard_1\\src\\img\\android.png"));
+		mnCita.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\citas.png"));
 		mnCita.setHorizontalAlignment(SwingConstants.RIGHT);
 		mnCita.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		mnCita.setBorder(UIManager.getBorder("Button.border"));
@@ -194,14 +182,34 @@ public class VentanaMeca extends JFrame {
 		JMenuItem btnNuevoCita = new JMenuItem("Nueva Cita");
 		mnCita.add(btnNuevoCita);
 		
+		JSeparator separator_6 = new JSeparator();
+		mnCita.add(separator_6);
+		
 		JMenuItem btnModificarCita = new JMenuItem("Modificar Cita");
 		mnCita.add(btnModificarCita);
+		
+		JSeparator separator_7 = new JSeparator();
+		mnCita.add(separator_7);
 		
 		JMenuItem btnBuscarCita = new JMenuItem("Buscar Cita");
 		mnCita.add(btnBuscarCita);
 		
+		JSeparator separator_8 = new JSeparator();
+		mnCita.add(separator_8);
+		
 		JMenuItem btnEliminarCita = new JMenuItem("Eliminar Cita");
 		mnCita.add(btnEliminarCita);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel.setBounds(0, 10, 136, 106);
+		panel_2.add(lblNewLabel);
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (3).png"));
+		lblNewLabel_1.setBounds(429, 253, 452, 157);
+		getContentPane().add(lblNewLabel_1);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		

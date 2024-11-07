@@ -55,7 +55,7 @@ public class Login extends JFrame {
 	public Login() {
 		getContentPane().setBackground(new Color(162, 206, 216));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1200, 700);
+		setBounds(100, 100, 700, 500);
 		getContentPane().setLayout(null);
 		this.setUndecorated(false);
 		this.setLocationRelativeTo(null);
@@ -68,43 +68,19 @@ public class Login extends JFrame {
 		Color azulBarra = new Color (0x0F296B);
 		Color azulFondo = new Color (0xA2CED8);
 		
-		
-		Panel panel = new Panel();
-		panel.setBounds(0, 0, 1200, 100);
-		getContentPane().add(panel);
-		
-		panel.setBackground(azulBarra);
-		panel.setLayout(null);
-		
-		JLabel lblNewLabel_1 = new JLabel("DERRAP");
-		lblNewLabel_1.setForeground(new Color(162, 206, 216));
-		lblNewLabel_1.setFont(new Font("Verdana", Font.BOLD, 23));
-		lblNewLabel_1.setBounds(147, 34, 164, 55);
-		panel.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\emili\\OneDrive\\Escritorio\\logodep.jpg"));
-		lblNewLabel_2.setBounds(36, 21, 149, 68);
-		panel.add(lblNewLabel_2);
-		
-		Panel panel_1 = new Panel();
-		panel_1.setBounds(0, 618, 1200, 100);
-		getContentPane().add(panel_1);
-		panel_1.setBackground(azulBarra);
-		
 		txtUsuario = new JTextField();
-		txtUsuario.setBounds(436, 277, 229, 26);
+		txtUsuario.setBounds(222, 209, 229, 26);
 		getContentPane().add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Usuario");
 		lblNewLabel.setFont(new Font("Verdana", Font.BOLD, 12));
-		lblNewLabel.setBounds(436, 252, 64, 14);
+		lblNewLabel.setBounds(309, 185, 64, 14);
 		getContentPane().add(lblNewLabel);
 		
 		JLabel lblContrasea = new JLabel("Contraseña");
 		lblContrasea.setFont(new Font("Verdana", Font.BOLD, 12));
-		lblContrasea.setBounds(436, 330, 89, 14);
+		lblContrasea.setBounds(300, 262, 89, 14);
 		getContentPane().add(lblContrasea);
 		
 		JButton btnAceptar = new JButton("Aceptar");
@@ -113,7 +89,7 @@ public class Login extends JFrame {
 				conexion.comprobarUsuario(txtUsuario.getText(),txtContrasena.getText());
 			}
 		});
-		btnAceptar.setBounds(436, 431, 89, 23);
+		btnAceptar.setBounds(222, 345, 89, 23);
 		getContentPane().add(btnAceptar);
 		
 		JButton btnSalir = new JButton("Salir");
@@ -122,13 +98,19 @@ public class Login extends JFrame {
 				dispose();
 			}
 		});
-		btnSalir.setBounds(576, 431, 89, 23);
+		btnSalir.setBounds(362, 345, 89, 23);
 		getContentPane().add(btnSalir);
 		
 		txtContrasena = new JTextField();
-		txtContrasena.setBounds(436, 370, 229, 26);
+		txtContrasena.setBounds(222, 286, 229, 26);
 		getContentPane().add(txtContrasena);
 		txtContrasena.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setBackground(new Color(0, 0, 0));
+		lblNewLabel_2.setBounds(267, 31, 133, 110);
+		getContentPane().add(lblNewLabel_2);
+		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
