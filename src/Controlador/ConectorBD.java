@@ -1,6 +1,8 @@
 package Controlador;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,37 +13,37 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-
 import Vista.VentanaAdmin;
 import Vista.VentanaMeca;
 
-
-
-
 public class ConectorBD {
-	
-	private static final String CONTROLADOR="com.mysql.jdbc.Driver";
-	private static final String URL="jdbc:mysql://localhost:3306/derrap?useSSL=false";
-	private static final String USUARIO="root";
-	private static final String CLAVE="1234";
-	
+
+	private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
+	private static final String URL = "jdbc:mysql://localhost:3306/derrap?useSSL=false";
+	private static final String USUARIO = "root";
+	private static final String CLAVE = "1234";
+
 //	private static final String URL="jdbc:mysql://bt6vnfhsbznrtte5otzn-mysql.services.clever-cloud.com:3306/bt6vnfhsbznrtte5otzn?useSSL=false";
 //	private static final String USUARIO="uybh0n0nbxfzycii";
 //	private static final String CLAVE="PUHGl9rXIG9aJy7pBjiu";
-	Connection cn=null;
-	Statement stm=null;
-	ResultSet resultado=null;
-	
-	
-	
+	Connection cn = null;
+	Statement stm = null;
+	ResultSet resultado = null;
+	PreparedStatement pst;
+
+	/** 
+	 * 
+	 *  Establece una conexión con la base de datos utilizando los parámetros configurados. 
+	 *  @return La conexión establecida, o null si ocurre un error.
+	 *  
+	  */
 	public Connection conexionCorrecta() {
 		try {
-			
-			cn=DriverManager.getConnection(URL, USUARIO, CLAVE);
+
+			cn = DriverManager.getConnection(URL, USUARIO, CLAVE);
 			System.out.println("conexion correcta");
-			stm=cn.createStatement();
-			
-			
+			stm = cn.createStatement();
+
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -49,85 +51,78 @@ public class ConectorBD {
 		return cn;
 	}
 
-
-
+	/** 
+	 *  Comprueba las credenciales del usuario y abre la ventana correspondiente según el tipo de usuario. 
+	 * @param usuario El nombre de usuario a comprobar. 
+	 * @param contrasena La contraseña del usuario a comprobar.
+	 * @return 
+	 */
 	public void comprobarUsuario(String usuario, String contrasena) {
-		
+
 		try {
 			this.conexionCorrecta();
-			resultado=stm.executeQuery("SELECT contrasena,tipo FROM usuario WHERE usuario= '"+usuario+"'");
-			while(resultado.next()) {
-			if (resultado.getString("contrasena").equals(contrasena)) {
-				if (resultado.getString("tipo").equalsIgnoreCase("admin")) {
-					VentanaAdmin paginaAdmin=new VentanaAdmin();
-					paginaAdmin.setVisible(true);
+			resultado = stm.executeQuery("SELECT contrasena,tipo FROM usuario WHERE usuario= '" + usuario + "'");
+			
+			if (resultado.next()) {
+
+				if (resultado.getString("contrasena").equals(contrasena)) {
+
+					if (resultado.getString("tipo").equalsIgnoreCase("admin")) {
+						VentanaAdmin paginaAdmin = new VentanaAdmin();
+						paginaAdmin.setVisible(true);
+					} else {
+						VentanaMeca paginaMecanico = new VentanaMeca();
+						paginaMecanico.setVisible(true);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
 				}
-				else {
-					VentanaMeca paginaMecanico=new VentanaMeca();
-					paginaMecanico.setVisible(true);
-				}
+
+			} else {
+				JOptionPane.showMessageDialog(null, "Usuario incorrecto");
 			}
-			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
+
+//	public void comprobarUsuario(String usuario, String contrasena) {
+//		try {
+//
+//			this.conexionCorrecta();
+//
+//			String query = "SELECT contrasena, tipo FROM usuario WHERE usuario = ?";
+//			pst = cn.prepareStatement(query);
+//			pst.setString(1, usuario);
+//			ResultSet resultado = pst.executeQuery();
+//
+//			if (resultado.next()) {
+//
+//				if (resultado.getString("contrasena").equals(contrasena)) {
+//
+//					if (resultado.getString("tipo").equalsIgnoreCase("admin")) {
+//						VentanaAdmin paginaAdmin = new VentanaAdmin();
+//						paginaAdmin.setVisible(true);
+//					} else {
+//						VentanaMeca paginaMecanico = new VentanaMeca();
+//						paginaMecanico.setVisible(true);
+//					}
+//				} else {
+//					// Contraseña incorrecta
+//					JOptionPane.showMessageDialog(null, "contraseña incorrecta");
+//				}
+//			} else {
+//				// Usuario no encontrado
+//				JOptionPane.showMessageDialog(null, "usuario incorrecto");
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 //	public ArrayList buscarActor(String nombreActor) {
 //		ArrayList dato=new ArrayList();
@@ -206,6 +201,3 @@ public class ConectorBD {
 //		}
 //		
 //	}
-	
-
-

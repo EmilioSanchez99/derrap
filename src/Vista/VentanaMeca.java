@@ -29,6 +29,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
+import java.awt.Toolkit;
 
 public class VentanaMeca extends JFrame {
 
@@ -60,11 +61,13 @@ public class VentanaMeca extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaMeca() {
-		getContentPane().setBackground(new Color(162, 206, 216));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
+		getContentPane().setBackground(new Color(191, 255, 244));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(null);
-		
+		this.setResizable(false);
+
 		this.setLocationRelativeTo(null);
 
 		
@@ -76,7 +79,7 @@ public class VentanaMeca extends JFrame {
 		Color azulFondo = new Color (0xA2CED8);
 		
 		Panel panel_2 = new Panel();
-		panel_2.setBackground(new Color(15, 41, 107));
+		panel_2.setBackground(new Color(15, 205, 210));
 		panel_2.setBounds(0, 0, 139, 700);
 		
 		getContentPane().add(panel_2);

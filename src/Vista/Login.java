@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
+import java.awt.Toolkit;
 
 public class Login extends JFrame {
 
@@ -42,6 +43,7 @@ public class Login extends JFrame {
 					Login frame = new Login();
 					frame.setVisible(true);
 					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -53,12 +55,14 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
-		getContentPane().setBackground(new Color(162, 206, 216));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
+		getContentPane().setBackground(new Color(191, 255, 244));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
 		getContentPane().setLayout(null);
 		this.setUndecorated(false);
 		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 
         
         
