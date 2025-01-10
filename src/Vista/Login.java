@@ -16,6 +16,8 @@ import java.awt.Panel;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
@@ -92,7 +94,9 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				conexion.comprobarUsuario(txtUsuario.getText(),txtContrasena.getText());
 			}
+			
 		});
+		
 		btnAceptar.setBounds(222, 345, 89, 23);
 		getContentPane().add(btnAceptar);
 		
@@ -109,6 +113,15 @@ public class Login extends JFrame {
 		txtContrasena.setBounds(222, 286, 229, 26);
 		getContentPane().add(txtContrasena);
 		txtContrasena.setColumns(10);
+		txtContrasena.addKeyListener(new KeyAdapter() {
+		    @Override
+		    public void keyPressed(KeyEvent e) {
+		        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+		            conexion.comprobarUsuario(txtUsuario.getText(), txtContrasena.getText());
+		        }
+		    }
+		});
+
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setBackground(new Color(0, 0, 0));
