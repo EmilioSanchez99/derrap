@@ -88,116 +88,37 @@ public class ConectorBD {
 		}
 
 	}
+	public void anadirUsuario(String nif,String nombre,String apellido1,String apellido2,String telefono, String email) {
+        String query = "INSERT INTO cliente (nif, nombre, apellido1, apellido2, telefono, email) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection connection = conexionCorrecta();
+        		PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        	preparedStatement.setString(1, nif);
+        	preparedStatement.setString(2, nombre);
+        	preparedStatement.setString(3, apellido1);
+        	preparedStatement.setString(4, apellido2);
+        	preparedStatement.setString(5, telefono);
+        	preparedStatement.setString(6, email);
+        	preparedStatement.executeUpdate();
+        	
+        }catch ( SQLException e) {
+        	e.printStackTrace();
+        }
+	}
+	
 
-//	public void comprobarUsuario(String usuario, String contrasena) {
-//		try {
-//
-//			this.conexionCorrecta();
-//
-//			String query = "SELECT contrasena, tipo FROM usuario WHERE usuario = ?";
-//			pst = cn.prepareStatement(query);
-//			pst.setString(1, usuario);
-//			ResultSet resultado = pst.executeQuery();
-//
-//			if (resultado.next()) {
-//
-//				if (resultado.getString("contrasena").equals(contrasena)) {
-//
-//					if (resultado.getString("tipo").equalsIgnoreCase("admin")) {
-//						VentanaAdmin paginaAdmin = new VentanaAdmin();
-//						paginaAdmin.setVisible(true);
-//					} else {
-//						VentanaMeca paginaMecanico = new VentanaMeca();
-//						paginaMecanico.setVisible(true);
-//					}
-//				} else {
-//					// Contraseña incorrecta
-//					JOptionPane.showMessageDialog(null, "contraseña incorrecta");
-//				}
-//			} else {
-//				// Usuario no encontrado
-//				JOptionPane.showMessageDialog(null, "usuario incorrecto");
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void actualizarCliente(Object clienteId, String campo, String nuevoValor) {
+		String query = "UPDATE cliente SET " + campo + " = ? WHERE nif = ?";
+	    try (Connection connection = conexionCorrecta();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setString(1, nuevoValor);
+	        preparedStatement.setString(2, (String) clienteId);
+	        preparedStatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		
+	}
+
+	
 }
 
-//	public ArrayList buscarActor(String nombreActor) {
-//		ArrayList dato=new ArrayList();
-//		this.conexionCorrecta();
-//		try {
-//			resultado=stm.executeQuery("SELECT * FROM actor WHERE first_name = '"+nombreActor+"'");
-//			while(resultado.next()) {
-//			String nombreObtenido=resultado.getString("first_name");
-//			String apellidoObtenido=resultado.getString("last_name");
-//			
-//			dato.add(nombreObtenido+","+apellidoObtenido);
-//			System.out.println(nombreObtenido+","+apellidoObtenido);
-//			}
-////			stm.close();
-////			cn.close();
-//			
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return dato;
-//		
-//	}
-//
-//
-//
-//	public DefaultTableModel cargarTabla(String nombreActor) {
-//		String[]titulos= {"nombre","apellidos"};
-//		String []registros =new String[2];
-//		DefaultTableModel modelo=new DefaultTableModel(null,titulos);
-//		
-//		
-//		try {
-//			resultado=stm.executeQuery("SELECT * FROM actor WHERE first_name = '"+nombreActor+"'");
-//			
-//
-//			while(resultado.next()) {
-//				registros[0]=resultado.getString("first_name");
-//				registros[1]=resultado.getString("last_name");
-//				modelo.addRow(registros);
-//				
-//				
-//			}
-//			stm.close();
-//			cn.close();
-//			
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return modelo;
-//	}
-//
-//
-//
-//	public void insertarNuevo(JTextField txtNombre, JTextField txtApellido) {
-//		String nombreNuevo=txtNombre.getText();
-//		String apellidoNuevo=txtApellido.getText();
-//		this.conexionCorrecta();
-//		
-//		if(!nombreNuevo.isEmpty()&&!apellidoNuevo.isEmpty()) {
-//		
-//			try {
-//				stm.executeUpdate("INSERT INTO actor (first_name,Last_name) VALUES ('"+nombreNuevo+"','"+apellidoNuevo+"')");
-//				stm.close();
-//				cn.close();
-//				JOptionPane.showMessageDialog(null, "usuario insertado");
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//				
-//			}
-//		}
-//		else {
-//			JOptionPane.showMessageDialog(null, "usuario no insertado");
-//		}
-//		
-//	}
