@@ -70,6 +70,7 @@ public class ConectorBD {
 					if (resultado.getString("tipo").equalsIgnoreCase("admin")) {
 						VentanaAdmin paginaAdmin = new VentanaAdmin();
 						paginaAdmin.setVisible(true);
+						
 					} else {
 						VentanaMeca paginaMecanico = new VentanaMeca();
 						paginaMecanico.setVisible(true);
@@ -88,7 +89,7 @@ public class ConectorBD {
 		}
 
 	}
-	public void anadirUsuario(String nif,String nombre,String apellido1,String apellido2,String telefono, String email) {
+	public void anadirCliente(String nif,String nombre,String apellido1,String apellido2,String telefono, String email) {
         String query = "INSERT INTO cliente (nif, nombre, apellido1, apellido2, telefono, email) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = conexionCorrecta();
         		PreparedStatement preparedStatement = connection.prepareStatement(query)){
@@ -104,20 +105,97 @@ public class ConectorBD {
         	e.printStackTrace();
         }
 	}
-	
-
-	public void actualizarCliente(Object clienteId, String campo, String nuevoValor) {
-		String query = "UPDATE cliente SET " + campo + " = ? WHERE nif = ?";
+	public void actualizarCliente(String nif, String nombre, String apellido1, String apellido2, String telefono, String email) {
+	    String query = "UPDATE cliente SET nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ? WHERE nif = ?";
 	    try (Connection connection = conexionCorrecta();
 	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-	        preparedStatement.setString(1, nuevoValor);
-	        preparedStatement.setString(2, (String) clienteId);
+	        preparedStatement.setString(1, nombre);
+	        preparedStatement.setString(2, apellido1);
+	        preparedStatement.setString(3, apellido2);
+	        preparedStatement.setString(4, telefono);
+	        preparedStatement.setString(5, email);
+	        preparedStatement.setString(6, nif);
 	        preparedStatement.executeUpdate();
+	        
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-		
 	}
+	public void actualizarUsuario(String nif, String nombre, String apellido1, String apellido2, String telefono, String email, String usuario, String contrasena) {
+	    String query = "UPDATE usuario SET nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ?, usuario = ?, contrasena = ? WHERE nif = ?";
+	    try (Connection connection = conexionCorrecta();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setString(1, nombre);
+	        preparedStatement.setString(2, apellido1);
+	        preparedStatement.setString(3, apellido2);
+	        preparedStatement.setString(4, telefono);
+	        preparedStatement.setString(5, email);
+	        preparedStatement.setString(6, usuario);
+	        preparedStatement.setString(7, contrasena);
+	        preparedStatement.setString(8, nif);
+	        preparedStatement.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	
+	public void anadirUsuario(String nif, String nombre, String apellido1, String apellido2, String telefono, String email, String usuario, String contrasena) {
+	    String query = "INSERT INTO usuario (nif, nombre, apellido1, apellido2, telefono, email, usuario, contrasena,tipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    try (Connection connection = conexionCorrecta();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setString(1, nif);
+	        preparedStatement.setString(2, nombre);
+	        preparedStatement.setString(3, apellido1);
+	        preparedStatement.setString(4, apellido2);
+	        preparedStatement.setString(5, telefono);
+	        preparedStatement.setString(6, email);
+	        preparedStatement.setString(7, usuario);
+	        preparedStatement.setString(8, contrasena);
+	        preparedStatement.setString(9, "mecanico");
+	        preparedStatement.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public void anadirVehiculo(String matricula, String modelo, String marca, String clienteNif) {
+	    String query = "INSERT INTO vehiculo (matricula, modelo, marca, cliente_nif) VALUES (?, ?, ?, ?)";
+	    try (Connection connection = conexionCorrecta();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setString(1, matricula);
+	        preparedStatement.setString(2, modelo);
+	        preparedStatement.setString(3, marca);
+	        preparedStatement.setString(4, clienteNif);
+	        preparedStatement.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public void actualizarVehiculo(String matricula, String modelo, String marca, String clienteNif) {
+	    String query = "UPDATE vehiculo SET modelo = ?, marca = ?, cliente_nif = ? WHERE matricula = ?";
+	    try (Connection connection = conexionCorrecta();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setString(1, modelo);
+	        preparedStatement.setString(2, marca);
+	        preparedStatement.setString(3, clienteNif);
+	        preparedStatement.setString(4, matricula);
+	        preparedStatement.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
+
+
+	
+
 
 	
 }
