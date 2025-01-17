@@ -83,7 +83,7 @@ public class VentanaMeca extends JFrame {
 
         JLabel lblNewLabel = new JLabel("");
         lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-        lblNewLabel.setBounds(10, 0, 126, 76);
+        lblNewLabel.setBounds(10, 10, 126, 76);
         panelIzquierda.add(lblNewLabel);
         lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
         
@@ -196,7 +196,7 @@ public class VentanaMeca extends JFrame {
         lblId.setBounds(10, 10, 70, 13);
         panel.add(lblId);
         
-        JLabel lblIdEditable = new JLabel("New label");
+        JLabel lblIdEditable = new JLabel("1");
         lblIdEditable.setBounds(103, 10, 45, 13);
         panel.add(lblIdEditable);
         
@@ -204,7 +204,7 @@ public class VentanaMeca extends JFrame {
         lblMatricula.setBounds(227, 10, 70, 13);
         panel.add(lblMatricula);
         
-        JLabel lblIdEditable_1 = new JLabel("New label");
+        JLabel lblIdEditable_1 = new JLabel("2544JJD");
         lblIdEditable_1.setBounds(307, 10, 45, 13);
         panel.add(lblIdEditable_1);
         
@@ -212,7 +212,7 @@ public class VentanaMeca extends JFrame {
         lblModelo.setBounds(441, 10, 70, 13);
         panel.add(lblModelo);
         
-        JLabel lblModeloEditable = new JLabel("New label");
+        JLabel lblModeloEditable = new JLabel("Renault megane");
         lblModeloEditable.setBounds(541, 10, 110, 13);
         panel.add(lblModeloEditable);
         
@@ -220,15 +220,15 @@ public class VentanaMeca extends JFrame {
         lblDescripcion.setBounds(10, 72, 70, 13);
         panel.add(lblDescripcion);
         
-        JLabel lblDescripcionEditable = new JLabel("New label");
-        lblDescripcionEditable.setBounds(103, 72, 45, 13);
+        JLabel lblDescripcionEditable = new JLabel("No arranca");
+        lblDescripcionEditable.setBounds(103, 72, 83, 13);
         panel.add(lblDescripcionEditable);
         
-        JLabel lblEstado = new JLabel("Modelo");
+        JLabel lblEstado = new JLabel("Estado");
         lblEstado.setBounds(705, 10, 70, 13);
         panel.add(lblEstado);
         
-        JLabel lblEstadoEditable = new JLabel("New label");
+        JLabel lblEstadoEditable = new JLabel("En reparacion");
         lblEstadoEditable.setBounds(792, 10, 110, 13);
         panel.add(lblEstadoEditable);
         
@@ -241,7 +241,7 @@ public class VentanaMeca extends JFrame {
         lblId_1.setBounds(10, 10, 70, 13);
         panel_1.add(lblId_1);
         
-        JLabel lblIdEditable_2 = new JLabel("New label");
+        JLabel lblIdEditable_2 = new JLabel("2");
         lblIdEditable_2.setBounds(103, 10, 45, 13);
         panel_1.add(lblIdEditable_2);
         
@@ -249,7 +249,7 @@ public class VentanaMeca extends JFrame {
         lblMatricula_1.setBounds(227, 10, 70, 13);
         panel_1.add(lblMatricula_1);
         
-        JLabel lblIdEditable_1_1 = new JLabel("New label");
+        JLabel lblIdEditable_1_1 = new JLabel("5555AAA");
         lblIdEditable_1_1.setBounds(307, 10, 45, 13);
         panel_1.add(lblIdEditable_1_1);
         
@@ -257,7 +257,7 @@ public class VentanaMeca extends JFrame {
         lblModelo_1.setBounds(441, 10, 70, 13);
         panel_1.add(lblModelo_1);
         
-        JLabel lblModeloEditable_1 = new JLabel("New label");
+        JLabel lblModeloEditable_1 = new JLabel("Opel Corsa");
         lblModeloEditable_1.setBounds(541, 10, 110, 13);
         panel_1.add(lblModeloEditable_1);
         
@@ -265,15 +265,15 @@ public class VentanaMeca extends JFrame {
         lblDescripcion_1.setBounds(10, 72, 70, 13);
         panel_1.add(lblDescripcion_1);
         
-        JLabel lblDescripcionEditable_1 = new JLabel("New label");
-        lblDescripcionEditable_1.setBounds(103, 72, 45, 13);
+        JLabel lblDescripcionEditable_1 = new JLabel("Limpiaparabrisas roto");
+        lblDescripcionEditable_1.setBounds(103, 72, 118, 13);
         panel_1.add(lblDescripcionEditable_1);
         
-        JLabel lblEstado_1 = new JLabel("Modelo");
+        JLabel lblEstado_1 = new JLabel("Estado");
         lblEstado_1.setBounds(705, 10, 70, 13);
         panel_1.add(lblEstado_1);
         
-        JLabel lblEstadoEditable_1 = new JLabel("New label");
+        JLabel lblEstadoEditable_1 = new JLabel("Pendiente");
         lblEstadoEditable_1.setBounds(792, 10, 110, 13);
         panel_1.add(lblEstadoEditable_1);
         
@@ -286,7 +286,7 @@ public class VentanaMeca extends JFrame {
         lblId_2.setBounds(10, 10, 70, 13);
         panel_2.add(lblId_2);
         
-        JLabel lblIdEditable_3 = new JLabel("New label");
+        JLabel lblIdEditable_3 = new JLabel("3");
         lblIdEditable_3.setBounds(103, 10, 45, 13);
         panel_2.add(lblIdEditable_3);
         
@@ -294,7 +294,7 @@ public class VentanaMeca extends JFrame {
         lblMatricula_2.setBounds(227, 10, 70, 13);
         panel_2.add(lblMatricula_2);
         
-        JLabel lblIdEditable_1_2 = new JLabel("New label");
+        JLabel lblIdEditable_1_2 = new JLabel("8888BBB");
         lblIdEditable_1_2.setBounds(307, 10, 45, 13);
         panel_2.add(lblIdEditable_1_2);
         
@@ -302,7 +302,7 @@ public class VentanaMeca extends JFrame {
         lblModelo_2.setBounds(441, 10, 70, 13);
         panel_2.add(lblModelo_2);
         
-        JLabel lblModeloEditable_2 = new JLabel("New label");
+        JLabel lblModeloEditable_2 = new JLabel("Toyota Auris");
         lblModeloEditable_2.setBounds(541, 10, 110, 13);
         panel_2.add(lblModeloEditable_2);
         
@@ -310,15 +310,15 @@ public class VentanaMeca extends JFrame {
         lblDescripcion_2.setBounds(10, 72, 70, 13);
         panel_2.add(lblDescripcion_2);
         
-        JLabel lblDescripcionEditable_2 = new JLabel("New label");
-        lblDescripcionEditable_2.setBounds(103, 72, 45, 13);
+        JLabel lblDescripcionEditable_2 = new JLabel("Ruedas pinchadas");
+        lblDescripcionEditable_2.setBounds(103, 72, 82, 13);
         panel_2.add(lblDescripcionEditable_2);
         
-        JLabel lblEstado_2 = new JLabel("Modelo");
+        JLabel lblEstado_2 = new JLabel("Estado");
         lblEstado_2.setBounds(705, 10, 70, 13);
         panel_2.add(lblEstado_2);
         
-        JLabel lblEstadoEditable_2 = new JLabel("New label");
+        JLabel lblEstadoEditable_2 = new JLabel("Pendiente");
         lblEstadoEditable_2.setBounds(792, 10, 110, 13);
         panel_2.add(lblEstadoEditable_2);
         panelPrincipal.add(panelOrdenes, "O r d e n e s");

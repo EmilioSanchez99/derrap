@@ -85,7 +85,7 @@ public class VentanaAdmin extends JFrame {
 
         JLabel lblNewLabel = new JLabel("");
         lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-        lblNewLabel.setBounds(10, 0, 126, 76);
+        lblNewLabel.setBounds(10, 10, 126, 76);
         panelIzquierda.add(lblNewLabel);
         lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
         
