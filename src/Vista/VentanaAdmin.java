@@ -1,6 +1,7 @@
 package Vista;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
@@ -30,8 +31,14 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import Controlador.ConectorBD;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.MatteBorder;
 
 public class VentanaAdmin extends JFrame {
 
@@ -177,7 +184,7 @@ public class VentanaAdmin extends JFrame {
 
      // Botón Añadir Cliente
         JButton btnAnadirCliente = new JButton("");
-        btnAnadirCliente.setBounds(923, 11, 59, 32);
+        btnAnadirCliente.setBounds(893, 19, 52, 32);
         btnAnadirCliente.setBorder(BorderFactory.createEmptyBorder());
         btnAnadirCliente.setContentAreaFilled(false);
 
@@ -208,7 +215,7 @@ public class VentanaAdmin extends JFrame {
 
      // Botón Modificar Cliente
         JButton btnModificarCliente = new JButton("");
-        btnModificarCliente.setBounds(992, 11, 33, 33);
+        btnModificarCliente.setBounds(955, 19, 33, 33);
         btnModificarCliente.setBorder(BorderFactory.createEmptyBorder());
         btnModificarCliente.setContentAreaFilled(false);
 
@@ -239,8 +246,15 @@ public class VentanaAdmin extends JFrame {
 
 
         table = new JTable();
+        table.setGridColor(new Color(128, 128, 128));
+        table.setToolTipText("");
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setFillsViewportHeight(true);
+        table.setFont(new Font("Tahoma", Font.BOLD, 12));
+        table.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(60, 47, 128)));
+        table.setBackground(new Color(174, 232, 202));
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(10, 45, 1026, 645);
+        scrollPane.setBounds(56, 62, 932, 554);
         panelClientes.add(scrollPane);
 
         loadClientesData();
@@ -250,7 +264,7 @@ public class VentanaAdmin extends JFrame {
         panelMecanicos.setLayout(null);
         panelMecanicos.setBackground(new Color(250,237,218));
         btnAnadirMecanico = new JButton("");
-        btnAnadirMecanico.setBounds(923, 11, 59, 32);
+        btnAnadirMecanico.setBounds(890, 19, 59, 32);
         btnAnadirMecanico.setBorder(BorderFactory.createEmptyBorder());
         btnAnadirMecanico.setContentAreaFilled(false);
         btnAnadirMecanico.setIcon(resizedIcon);
@@ -267,7 +281,9 @@ public class VentanaAdmin extends JFrame {
         agregarEventoTeclado(btnAnadirMecanico, "ADD_MECANIC", KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK);
 
         btnModificarMecanico = new JButton("");
-        btnModificarMecanico.setBounds(992, 11, 33, 33);
+        btnModificarMecanico.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnModificarMecanico.setBackground(new Color(255, 255, 255));
+        btnModificarMecanico.setBounds(955, 19, 33, 33);
         btnModificarMecanico.setBorder(BorderFactory.createEmptyBorder());
         btnModificarMecanico.setContentAreaFilled(false);
 
@@ -292,18 +308,23 @@ public class VentanaAdmin extends JFrame {
         agregarEventoTeclado(btnModificarMecanico, "MODIDFY_MECANIC", KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
         panelMecanicos.add(btnModificarMecanico);
         tableMecanicos = new JTable();
+        tableMecanicos.setFont(new Font("Tahoma", Font.BOLD, 12));
+        tableMecanicos.setFillsViewportHeight(true);
+        tableMecanicos.setBackground(new Color(174, 232, 202));
+        tableMecanicos.setBorder(new LineBorder(new Color(60, 47, 128), 2));
         JScrollPane scrollPane2 = new JScrollPane(tableMecanicos);
-        scrollPane2.setBounds(10, 45, 1026, 645);
+        scrollPane2.setBounds(56, 62, 932, 554);
         panelMecanicos.add(scrollPane2);
         loadMecanicosData();
         // OPanel Vehiculos
        
         panelVehiculos = new JPanel();
+        panelVehiculos.setBorder(new LineBorder(new Color(60, 47, 128), 2));
         panelVehiculos.setBackground(new Color(250,237,218));
         panelVehiculos.setLayout(null); // Asegúrate de usar un diseño de disposición nulo si deseas posicionar componentes manualmente
 
         btnAnadirVehiculo = new JButton("");
-        btnAnadirVehiculo.setBounds(923, 11, 59, 32);
+        btnAnadirVehiculo.setBounds(893, 19, 52, 32);
         btnAnadirVehiculo.setBorder(BorderFactory.createEmptyBorder());
         btnAnadirVehiculo.setContentAreaFilled(false);
         btnAnadirVehiculo.setIcon(resizedIcon);
@@ -319,7 +340,7 @@ public class VentanaAdmin extends JFrame {
         });
 
         btnModificarVehiculo = new JButton("");
-        btnModificarVehiculo.setBounds(992, 11, 33, 33);
+        btnModificarVehiculo.setBounds(955, 19, 33, 33);
         btnModificarVehiculo.setBorder(BorderFactory.createEmptyBorder());
         btnModificarVehiculo.setContentAreaFilled(false);
 
@@ -344,8 +365,12 @@ public class VentanaAdmin extends JFrame {
 
 
         tableVehiculos = new JTable();
+        tableVehiculos.setBorder(new LineBorder(new Color(60, 47, 128)));
+        tableVehiculos.setFont(new Font("Tahoma", Font.BOLD, 12));
+        tableVehiculos.setFillsViewportHeight(true);
+        tableVehiculos.setBackground(new Color(174, 232, 202));
         JScrollPane scrollPane3 = new JScrollPane(tableVehiculos);
-        scrollPane3.setBounds(10, 45, 1026, 645);
+        scrollPane3.setBounds(56, 62, 932, 554);
         panelVehiculos.add(scrollPane3);
 
         loadVehiculosData();
@@ -398,7 +423,7 @@ public class VentanaAdmin extends JFrame {
             ResultSet rs = stmt.executeQuery(query);
 
             DefaultTableModel model = new DefaultTableModel(
-                    new Object[] { "NIF", "Nombre", "Apellido1", "Apellido2", "Teléfono", "Email" }, 0);
+                    new Object[]{"NIF", "Nombre", "Apellido1", "Apellido2", "Teléfono", "Email"}, 0);
 
             while (rs.next()) {
                 String nif = rs.getString("nif");
@@ -407,11 +432,25 @@ public class VentanaAdmin extends JFrame {
                 String apellido2 = rs.getString("apellido2");
                 String telefono = rs.getString("telefono");
                 String email = rs.getString("email");
-                model.addRow(new Object[] { nif, nombre, apellido1, apellido2, telefono, email });
+                model.addRow(new Object[]{nif, nombre, apellido1, apellido2, telefono, email});
             }
 
             table.setModel(model);
-            
+
+            // Personalizar el renderizado del encabezado de la tabla
+            JTableHeader header = table.getTableHeader();
+            header.setDefaultRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JLabel label = new JLabel(value.toString());
+                    label.setOpaque(true);
+                    label.setBackground(new Color(60, 47, 128));
+                    label.setForeground(Color.WHITE);
+                    label.setFont(new Font("Tahoma", Font.BOLD, 12));
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    return label;
+                }
+            });
 
             rs.close();
             stmt.close();
@@ -420,6 +459,7 @@ public class VentanaAdmin extends JFrame {
             e.printStackTrace();
         }
     }
+
 
     static void loadMecanicosData() {
         try {
@@ -430,9 +470,7 @@ public class VentanaAdmin extends JFrame {
             ResultSet rs = stmt.executeQuery(query);
 
             DefaultTableModel model2 = new DefaultTableModel(
-                    new Object[] { "NIF", "Nombre", "Apellido1", "Apellido2", "Teléfono", "Email", "Usuario",
-                            "Contraseña" },
-                    0);
+                    new Object[]{"NIF", "Nombre", "Apellido1", "Apellido2", "Teléfono", "Email", "Usuario", "Contraseña"}, 0);
 
             while (rs.next()) {
                 String nif = rs.getString("nif");
@@ -443,18 +481,34 @@ public class VentanaAdmin extends JFrame {
                 String email = rs.getString("email");
                 String usuario = rs.getString("usuario");
                 String contrasena = rs.getString("contrasena");
-                model2.addRow(new Object[] { nif, nombre, apellido1, apellido2, telefono, email, usuario, contrasena });
+                model2.addRow(new Object[]{nif, nombre, apellido1, apellido2, telefono, email, usuario, contrasena});
             }
 
             tableMecanicos.setModel(model2);
 
+            // Personalizar el renderizado del encabezado de la tabla
+            JTableHeader header = tableMecanicos.getTableHeader();
+            header.setDefaultRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JLabel label = new JLabel(value.toString());
+                    label.setOpaque(true);
+                    label.setBackground(new Color(60, 47, 128));
+                    label.setForeground(Color.WHITE);
+                    label.setFont(new Font("Tahoma", Font.BOLD, 12));
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    return label;
+                }
+            });
+
             rs.close();
             stmt.close();
             conn.close();
-             } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     static void loadVehiculosData() {
         try {
             ConectorBD conector = new ConectorBD();
@@ -475,7 +529,20 @@ public class VentanaAdmin extends JFrame {
             }
 
             tableVehiculos.setModel(model);
-
+         // Personalizar el renderizado del encabezado de la tabla
+            JTableHeader header = tableVehiculos.getTableHeader();
+            header.setDefaultRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JLabel label = new JLabel(value.toString());
+                    label.setOpaque(true);
+                    label.setBackground(new Color(60, 47, 128));
+                    label.setForeground(Color.WHITE);
+                    label.setFont(new Font("Tahoma", Font.BOLD, 12));
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    return label;
+                }
+            });
             rs.close();
             stmt.close();
             conn.close();
