@@ -8,19 +8,26 @@ import java.awt.CardLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -71,7 +78,7 @@ public class VentanaAdmin extends JFrame {
 
         // Panel Izquierda
         JPanel panelIzquierda = new JPanel();
-        panelIzquierda.setBackground(new Color(15, 205, 210));
+        panelIzquierda.setBackground(new Color(60,47,128));
         panelIzquierda.setBounds(0, 0, 139, 700);
         getContentPane().add(panelIzquierda);
         panelIzquierda.setLayout(null);
@@ -102,10 +109,13 @@ public class VentanaAdmin extends JFrame {
         btnVehiculos.setHorizontalAlignment(SwingConstants.LEFT);
         btnVehiculos.setFont(new Font("Tahoma", Font.BOLD, 13));
         btnVehiculos.setBounds(0, 233, 136, 57);
-        
+
+      
+
         panelIzquierda.add(btnVehiculos);
-        
+
         MetodoBoton(btnVehiculos, "/imagenes/Acoche.png");
+
         
         
         
@@ -142,11 +152,12 @@ public class VentanaAdmin extends JFrame {
 
         // Panel Clientes
         panelClientes = new JPanel();
-        panelClientes.setBackground(new Color(191, 255, 244));
+        panelClientes.setBackground(new Color(250,237,218));
         panelClientes.setLayout(null);
+        
 
      // Botón Añadir Cliente
-        btnAnadirCliente = new JButton("");
+        JButton btnAnadirCliente = new JButton("");
         btnAnadirCliente.setBounds(923, 11, 59, 32);
         btnAnadirCliente.setBorder(BorderFactory.createEmptyBorder());
         btnAnadirCliente.setContentAreaFilled(false);
@@ -170,10 +181,14 @@ public class VentanaAdmin extends JFrame {
                 ventanaCliente.setLocationRelativeTo(null);
             }
         });
+
+        agregarEventoTeclado(btnAnadirCliente, "ADD_CLIENT", KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK);
         panelClientes.add(btnAnadirCliente);
 
-        // Botón Modificar Cliente
-        btnModificarCliente = new JButton("");
+
+
+     // Botón Modificar Cliente
+        JButton btnModificarCliente = new JButton("");
         btnModificarCliente.setBounds(992, 11, 33, 33);
         btnModificarCliente.setBorder(BorderFactory.createEmptyBorder());
         btnModificarCliente.setContentAreaFilled(false);
@@ -194,12 +209,15 @@ public class VentanaAdmin extends JFrame {
                     modificarCliente.setVisible(true);
                     modificarCliente.setLocationRelativeTo(null);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla.", "Advertencia",
-                            JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
+
+        agregarEventoTeclado(btnModificarCliente, "MODIFY_CLIENT", KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
+
         panelClientes.add(btnModificarCliente);
+
 
         table = new JTable();
         JScrollPane scrollPane = new JScrollPane(table);
@@ -211,9 +229,12 @@ public class VentanaAdmin extends JFrame {
         // Panel Mecánicos
         panelMecanicos = new JPanel();
         panelMecanicos.setLayout(null);
-        panelMecanicos.setBackground(new Color(191, 255, 244));
-        btnAnadirMecanico = new JButton("Añadir Mecanico");
-        btnAnadirMecanico.setBounds(706, 10, 150, 25);
+        panelMecanicos.setBackground(new Color(250,237,218));
+        btnAnadirMecanico = new JButton("");
+        btnAnadirMecanico.setBounds(923, 11, 59, 32);
+        btnAnadirMecanico.setBorder(BorderFactory.createEmptyBorder());
+        btnAnadirMecanico.setContentAreaFilled(false);
+        btnAnadirMecanico.setIcon(resizedIcon);
         panelMecanicos.add(btnAnadirMecanico);
 
         btnAnadirMecanico.addActionListener(new ActionListener() {
@@ -224,10 +245,15 @@ public class VentanaAdmin extends JFrame {
                 ventanaMecanico.setLocationRelativeTo(null);
             }
         });
+        agregarEventoTeclado(btnAnadirMecanico, "ADD_MECANIC", KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK);
 
-        btnModificarMecanico = new JButton("Modificar Mecanico");
-        btnModificarMecanico.setBounds(886, 10, 150, 25);
-        panelMecanicos.add(btnModificarMecanico);
+        btnModificarMecanico = new JButton("");
+        btnModificarMecanico.setBounds(992, 11, 33, 33);
+        btnModificarMecanico.setBorder(BorderFactory.createEmptyBorder());
+        btnModificarMecanico.setContentAreaFilled(false);
+
+     
+        btnModificarMecanico.setIcon(resizedIcon2);
 
         btnModificarMecanico.addActionListener(new ActionListener() {
             @Override
@@ -244,6 +270,8 @@ public class VentanaAdmin extends JFrame {
                 }
             }
         });
+        agregarEventoTeclado(btnModificarMecanico, "MODIDFY_MECANIC", KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
+        panelMecanicos.add(btnModificarMecanico);
         tableMecanicos = new JTable();
         JScrollPane scrollPane2 = new JScrollPane(tableMecanicos);
         scrollPane2.setBounds(10, 45, 1026, 645);
@@ -252,11 +280,15 @@ public class VentanaAdmin extends JFrame {
         // OPanel Vehiculos
        
         panelVehiculos = new JPanel();
-        panelVehiculos.setBackground(new Color(191, 255, 244));
+        panelVehiculos.setBackground(new Color(250,237,218));
         panelVehiculos.setLayout(null); // Asegúrate de usar un diseño de disposición nulo si deseas posicionar componentes manualmente
 
-        btnAnadirVehiculo = new JButton("Añadir Vehículo");
-        btnAnadirVehiculo.setBounds(706, 10, 150, 25);
+        btnAnadirVehiculo = new JButton("");
+        btnAnadirVehiculo.setBounds(923, 11, 59, 32);
+        btnAnadirVehiculo.setBorder(BorderFactory.createEmptyBorder());
+        btnAnadirVehiculo.setContentAreaFilled(false);
+        btnAnadirVehiculo.setIcon(resizedIcon);
+        agregarEventoTeclado(btnAnadirVehiculo, "ADD_VEHICLE", KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK);
         panelVehiculos.add(btnAnadirVehiculo);
         btnAnadirVehiculo.addActionListener(new ActionListener() {
             @Override
@@ -267,8 +299,13 @@ public class VentanaAdmin extends JFrame {
             }
         });
 
-        btnModificarVehiculo = new JButton("Modificar Vehículo");
-        btnModificarVehiculo.setBounds(886, 10, 150, 25);
+        btnModificarVehiculo = new JButton("");
+        btnModificarVehiculo.setBounds(992, 11, 33, 33);
+        btnModificarVehiculo.setBorder(BorderFactory.createEmptyBorder());
+        btnModificarVehiculo.setContentAreaFilled(false);
+
+     
+        btnModificarVehiculo.setIcon(resizedIcon2);
         panelVehiculos.add(btnModificarVehiculo);
         btnModificarVehiculo.addActionListener(new ActionListener() {
             @Override
@@ -284,6 +321,8 @@ public class VentanaAdmin extends JFrame {
                 }
             }
         });
+        agregarEventoTeclado(btnModificarVehiculo, "modify_VEHICLE", KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
+
 
         tableVehiculos = new JTable();
         JScrollPane scrollPane3 = new JScrollPane(tableVehiculos);
@@ -294,7 +333,7 @@ public class VentanaAdmin extends JFrame {
 
         panelCitas = new JPanel();
         panelCitas.add(new JLabel("Citas"));
-        panelCitas.setBackground(new Color(191, 255, 244));
+        panelCitas.setBackground(new Color(250,237,218));
 
 
         // Agregar paneles al principal
@@ -353,6 +392,7 @@ public class VentanaAdmin extends JFrame {
             }
 
             table.setModel(model);
+            
 
             rs.close();
             stmt.close();
@@ -425,12 +465,14 @@ public class VentanaAdmin extends JFrame {
         }
     }
     private void MetodoBoton(JButton button, String iconPath) {
+
         // Establecer el icono
         ImageIcon icon = new ImageIcon(VentanaAdmin.class.getResource(iconPath));
         Image img = icon.getImage();
         Image resizedImg = img.getScaledInstance(26, 26, Image.SCALE_SMOOTH);  // Redimensionar el icono
         ImageIcon resizedIcon = new ImageIcon(resizedImg);
         button.setIcon(resizedIcon);
+
 
         // Configurar el botón para que tenga el borde negro y no tenga el fondo verde desde el inicio
         button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));  // Borde negro con grosor 2
@@ -446,14 +488,31 @@ public class VentanaAdmin extends JFrame {
                 }
 
                 // Establecer el fondo verde para el botón actual
-                button.setBackground(new Color(0, 255, 100)); // Fondo verde 
+                button.setBackground(new Color(106,207,201)); // Fondo verde 
 
                 // Guardar el botón actual como el seleccionado
                 btnSeleccionado = button;
             }
         });
     }
+    private void agregarEventoTeclado(JButton button,String actionCommand, int keyEvent, int modifiers) {
+    	InputMap inputMap = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    	KeyStroke keyStroke = KeyStroke.getKeyStroke(keyEvent, modifiers);
+    	inputMap.put(keyStroke, actionCommand);
+    	
+    	ActionMap actionMap = button.getActionMap();
+    	actionMap.put(actionCommand, new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				button.doClick();
+			}
+    		
+    	});
+    }
+
 
 
 }
+
 
