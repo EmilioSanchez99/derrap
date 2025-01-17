@@ -142,6 +142,25 @@ public class VentanaAdmin extends JFrame {
         panelIzquierda.add(btnCitas);
         
         MetodoBoton(btnCitas, "/imagenes/Acitas.png");
+        
+        JButton btnSalir = new JButton("Cerrar Sesion");
+        
+        btnSalir.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	int seleccion=JOptionPane.showConfirmDialog(null, "Seguro que quieres salir?", "confirmar", JOptionPane.YES_NO_OPTION);
+        	if (seleccion==JOptionPane.YES_OPTION) {
+        		dispose();
+        		Login login=new Login();
+        		login.setVisible(true);
+        		login.setLocationRelativeTo(null);
+        	}
+        		
+        	}
+        });
+        btnSalir.setHorizontalAlignment(SwingConstants.LEFT);
+        btnSalir.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnSalir.setBounds(0, 597, 136, 57);
+        panelIzquierda.add(btnSalir);
 
         // Panel Principal
         JPanel panelPrincipal = new JPanel();
@@ -510,9 +529,6 @@ public class VentanaAdmin extends JFrame {
     		
     	});
     }
-
-
-
 }
 
 

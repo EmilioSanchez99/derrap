@@ -1,221 +1,388 @@
 package Vista;
 
-
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Frame;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
-import java.awt.Panel;
 import java.awt.Font;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JPasswordField;
-import javax.swing.JSeparator;
-import javax.swing.ImageIcon;
-import javax.swing.JPopupMenu;
+import java.awt.Image;
+import java.awt.CardLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+
+import Controlador.ConectorBD;
 
 public class VentanaMeca extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private CardLayout cardLayout;
+    private JPanel panelMisOrdenes;
+    private JPanel panelOrdenes;
+    private JPanel panelStock;
+ 
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaMeca frame = new VentanaMeca();
-					frame.setVisible(true);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    
+    private JButton btnSeleccionado = null;
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VentanaMeca frame = new VentanaMeca();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Create the frame.
-	 */
-	public VentanaMeca() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
-		getContentPane().setBackground(new Color(191, 255, 244));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1200, 700);
-		getContentPane().setLayout(null);
-		this.setResizable(false);
+    /**
+     * Create the frame.
+     */
+    public VentanaMeca() {
+        setIconImage(Toolkit.getDefaultToolkit()
+                .getImage("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
+        getContentPane().setBackground(new Color(191, 255, 244));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1200, 700);
+        getContentPane().setLayout(null);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
 
-		this.setLocationRelativeTo(null);
+        // Panel Izquierda
+        JPanel panelIzquierda = new JPanel();
+        panelIzquierda.setBackground(new Color(60,47,128));
+        panelIzquierda.setBounds(0, 0, 139, 700);
+        getContentPane().add(panelIzquierda);
+        panelIzquierda.setLayout(null);
 
-		
+        JLabel lblNewLabel = new JLabel("");
+        lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+        lblNewLabel.setBounds(10, 0, 126, 76);
+        panelIzquierda.add(lblNewLabel);
+        lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
         
-		
-		
-		//Colores A2CED8
-		Color azulBarra = new Color (0x0F296B);
-		Color azulFondo = new Color (0xA2CED8);
-		
-		Panel panel_2 = new Panel();
-		panel_2.setBackground(new Color(15, 205, 210));
-		panel_2.setBounds(0, 0, 139, 700);
-		
-		getContentPane().add(panel_2);
-		panel_2.setLayout(null);
-		
-		JMenuBar mbCliente = new JMenuBar();
-		mbCliente.setBackground(new Color(255, 255, 255));
-		mbCliente.setToolTipText("Cliente");
-		mbCliente.setBounds(0, 173, 136, 49);
-		panel_2.add(mbCliente);
-		
-		JMenu mnCliente = new JMenu("Cliente");
-		mnCliente.setSelectedIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\logoDERRAP\\usuario.png"));
-		
-		mnCliente.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\usuario.png"));
-		mnCliente.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		mnCliente.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		mnCliente.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		mnCliente.setBorder(UIManager.getBorder("Button.border"));
-		mnCliente.setMaximumSize(new Dimension(5000, 32767));
-		mnCliente.setHorizontalAlignment(SwingConstants.RIGHT);
-		mnCliente.setBounds(0, 22, 136, 49);
-		mbCliente.add(mnCliente);
-		
+//BOTON MIS ORDENES
+        
+        JButton btnSusOrdenes = new JButton("Mis ordenes");
+        btnSusOrdenes.setHorizontalAlignment(SwingConstants.LEFT);
+        btnSusOrdenes.setForeground(new Color(0, 0, 0));
+        btnSusOrdenes.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnSusOrdenes.setBounds(0, 165, 136, 57);
+        
+        panelIzquierda.add(btnSusOrdenes);
+        
+        
+        MetodoBoton(btnSusOrdenes, "/imagenes/Acliente.png");
 
-		
-		
+//BOTON VEHICULO
+        
 
-		JMenuItem btnNuevoCliente = new JMenuItem("Nuevo cliente");
-		btnNuevoCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		mnCliente.add(btnNuevoCliente);
-		
-		JSeparator separator = new JSeparator();
-		mnCliente.add(separator);
-		
-		JMenuItem btnModificarCliente = new JMenuItem("Modificar cliente");
-		mnCliente.add(btnModificarCliente);
-		
-		JSeparator separator_1 = new JSeparator();
-		mnCliente.add(separator_1);
-		
-		JMenuItem btnBuscarCliente = new JMenuItem("Buscar cliente");
-		mnCliente.add(btnBuscarCliente);
-		
-		JSeparator separator_2 = new JSeparator();
-		mnCliente.add(separator_2);
-		
-		JMenuItem btnEliminarCliente = new JMenuItem("Eliminar cliente");
-		mnCliente.add(btnEliminarCliente);
-		
-		
-		
-		JMenuBar mbVehiculo = new JMenuBar();
-		mbVehiculo.setToolTipText("");
-		mbVehiculo.setBounds(0, 271, 136, 49);
-		panel_2.add(mbVehiculo);
-		
-		JMenu mnVehiculo = new JMenu("Vehículo");
-		mnVehiculo.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\vehiculo.png"));
-		mnVehiculo.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		mnVehiculo.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		mnVehiculo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		mnVehiculo.setBorder(UIManager.getBorder("Button.border"));
-		mnVehiculo.setMaximumSize(new Dimension(5000, 32767));
-		mnVehiculo.setHorizontalAlignment(SwingConstants.RIGHT);
-		mbVehiculo.add(mnVehiculo);
-		
-		JMenuItem btnNuevoVehiculo = new JMenuItem("Nuevo Vehículo");
-		mnVehiculo.add(btnNuevoVehiculo);
-		
-		JSeparator separator_3 = new JSeparator();
-		mnVehiculo.add(separator_3);
-		
-		JMenuItem btnModificarVehiculo = new JMenuItem("Modificar  Vehículo");
-		mnVehiculo.add(btnModificarVehiculo);
-		
-		JSeparator separator_4 = new JSeparator();
-		mnVehiculo.add(separator_4);
-		
-		JMenuItem btnBuscarVehiculo = new JMenuItem("Buscar Vehículo");
-		mnVehiculo.add(btnBuscarVehiculo);
-		
-		JSeparator separator_5 = new JSeparator();
-		mnVehiculo.add(separator_5);
-		
-		JMenuItem btnEliminarVehiculo = new JMenuItem("Eliminar Vehículo");
-		mnVehiculo.add(btnEliminarVehiculo);
-		
-		JMenuBar mbCita = new JMenuBar();
-		mbCita.setToolTipText("Cita");
-		mbCita.setBounds(0, 371, 136, 49);
-		panel_2.add(mbCita);
-		
-		JMenu mnCita = new JMenu("Cita");
-		mnCita.setMaximumSize(new Dimension(5000, 32767));
-		mnCita.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\citas.png"));
-		mnCita.setHorizontalAlignment(SwingConstants.RIGHT);
-		mnCita.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		mnCita.setBorder(UIManager.getBorder("Button.border"));
-		mnCita.setAlignmentX(1.0f);
-		mbCita.add(mnCita);
-		
-		JMenuItem btnNuevoCita = new JMenuItem("Nueva Cita");
-		mnCita.add(btnNuevoCita);
-		
-		JSeparator separator_6 = new JSeparator();
-		mnCita.add(separator_6);
-		
-		JMenuItem btnModificarCita = new JMenuItem("Modificar Cita");
-		mnCita.add(btnModificarCita);
-		
-		JSeparator separator_7 = new JSeparator();
-		mnCita.add(separator_7);
-		
-		JMenuItem btnBuscarCita = new JMenuItem("Buscar Cita");
-		mnCita.add(btnBuscarCita);
-		
-		JSeparator separator_8 = new JSeparator();
-		mnCita.add(separator_8);
-		
-		JMenuItem btnEliminarCita = new JMenuItem("Eliminar Cita");
-		mnCita.add(btnEliminarCita);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblNewLabel.setBounds(0, 10, 136, 106);
-		panel_2.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
-		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (3).png"));
-		lblNewLabel_1.setBounds(429, 253, 452, 157);
-		getContentPane().add(lblNewLabel_1);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
-		
-	}
+        JButton btnOrdenes = new JButton("O r d e n e s");
+        btnOrdenes.setHorizontalAlignment(SwingConstants.LEFT);
+        btnOrdenes.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnOrdenes.setBounds(0, 233, 136, 57);
+
+      
+
+        panelIzquierda.add(btnOrdenes);
+
+        MetodoBoton(btnOrdenes, "/imagenes/Acoche.png");
+
+        
+        
+        
+        //BOTON MECANICO
+        
+        JButton btnStock = new JButton("S t o c k");
+        btnStock.setHorizontalAlignment(SwingConstants.LEFT);
+        btnStock.setBounds(0, 302, 136, 57);
+        btnStock.setFont(new Font("Tahoma", Font.BOLD, 13));
+        panelIzquierda.add(btnStock);
+        
+        MetodoBoton(btnStock, "/imagenes/Amecanico.png");
+        
+        JButton btnSalir = new JButton("Cerrar Sesion");
+        btnSalir.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	int seleccion=JOptionPane.showConfirmDialog(null, "Seguro que quieres salir?", "confirmar", JOptionPane.YES_NO_OPTION);
+        	if (seleccion==JOptionPane.YES_OPTION) {
+        		dispose();
+        		Login login=new Login();
+        		login.setVisible(true);
+        		login.setLocationRelativeTo(null);
+        	}
+        		
+        	}
+        });
+        btnSalir.setHorizontalAlignment(SwingConstants.LEFT);
+        btnSalir.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnSalir.setBounds(0, 597, 136, 57);
+        panelIzquierda.add(btnSalir);
+
+        // Panel Principal
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setBounds(138, 0, 1046, 700);
+        cardLayout = new CardLayout();
+        panelPrincipal.setLayout(cardLayout);
+        getContentPane().add(panelPrincipal);
+
+        // Panel Clientes
+        panelMisOrdenes = new JPanel();
+        panelMisOrdenes.setBackground(new Color(250,237,218));
+        panelMisOrdenes.setLayout(null);
+
+        // Cargar la imagen original desde los recursos
+        ImageIcon originalIcon = new ImageIcon(VentanaAdmin.class.getResource("/imagenes/add.png"));
+
+        // Redimensionar la imagen a 32x30 píxeles
+        Image ogimagen = originalIcon.getImage();
+        Image escalado = ogimagen.getScaledInstance(32, 30, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(escalado);
+
+        ImageIcon originalIcon2 = new ImageIcon(VentanaAdmin.class.getResource("/imagenes/modify.png"));
+        Image ogimagen2 = originalIcon2.getImage();
+        Image escalado2 = ogimagen2.getScaledInstance(32, 30, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon2 = new ImageIcon(escalado2);
+
+        
+
+        // Panel Mecánicos
+        panelStock = new JPanel();
+        panelStock.setLayout(null);
+        panelStock.setBackground(new Color(250,237,218));
+    
+        panelOrdenes = new JPanel();
+        panelOrdenes.setBackground(new Color(250,237,218));
+        panelOrdenes.setLayout(null); // Asegúrate de usar un diseño de disposición nulo si deseas posicionar componentes manualmente
+
+
+
+
+        // Agregar paneles al principal
+        panelPrincipal.add(panelMisOrdenes, "Mis ordenes");
+        
+        JPanel panel = new JPanel();
+        panel.setBounds(10, 10, 999, 182);
+        panelMisOrdenes.add(panel);
+        panel.setLayout(null);
+        
+        JLabel lblId = new JLabel("ID Reparacion");
+        lblId.setBounds(10, 10, 70, 13);
+        panel.add(lblId);
+        
+        JLabel lblIdEditable = new JLabel("New label");
+        lblIdEditable.setBounds(103, 10, 45, 13);
+        panel.add(lblIdEditable);
+        
+        JLabel lblMatricula = new JLabel("Matricula: ");
+        lblMatricula.setBounds(227, 10, 70, 13);
+        panel.add(lblMatricula);
+        
+        JLabel lblIdEditable_1 = new JLabel("New label");
+        lblIdEditable_1.setBounds(307, 10, 45, 13);
+        panel.add(lblIdEditable_1);
+        
+        JLabel lblModelo = new JLabel("Modelo");
+        lblModelo.setBounds(441, 10, 70, 13);
+        panel.add(lblModelo);
+        
+        JLabel lblModeloEditable = new JLabel("New label");
+        lblModeloEditable.setBounds(541, 10, 110, 13);
+        panel.add(lblModeloEditable);
+        
+        JLabel lblDescripcion = new JLabel("Descripcion");
+        lblDescripcion.setBounds(10, 72, 70, 13);
+        panel.add(lblDescripcion);
+        
+        JLabel lblDescripcionEditable = new JLabel("New label");
+        lblDescripcionEditable.setBounds(103, 72, 45, 13);
+        panel.add(lblDescripcionEditable);
+        
+        JLabel lblEstado = new JLabel("Modelo");
+        lblEstado.setBounds(705, 10, 70, 13);
+        panel.add(lblEstado);
+        
+        JLabel lblEstadoEditable = new JLabel("New label");
+        lblEstadoEditable.setBounds(792, 10, 110, 13);
+        panel.add(lblEstadoEditable);
+        
+        JPanel panel_1 = new JPanel();
+        panel_1.setLayout(null);
+        panel_1.setBounds(10, 218, 999, 182);
+        panelMisOrdenes.add(panel_1);
+        
+        JLabel lblId_1 = new JLabel("ID Reparacion");
+        lblId_1.setBounds(10, 10, 70, 13);
+        panel_1.add(lblId_1);
+        
+        JLabel lblIdEditable_2 = new JLabel("New label");
+        lblIdEditable_2.setBounds(103, 10, 45, 13);
+        panel_1.add(lblIdEditable_2);
+        
+        JLabel lblMatricula_1 = new JLabel("Matricula: ");
+        lblMatricula_1.setBounds(227, 10, 70, 13);
+        panel_1.add(lblMatricula_1);
+        
+        JLabel lblIdEditable_1_1 = new JLabel("New label");
+        lblIdEditable_1_1.setBounds(307, 10, 45, 13);
+        panel_1.add(lblIdEditable_1_1);
+        
+        JLabel lblModelo_1 = new JLabel("Modelo");
+        lblModelo_1.setBounds(441, 10, 70, 13);
+        panel_1.add(lblModelo_1);
+        
+        JLabel lblModeloEditable_1 = new JLabel("New label");
+        lblModeloEditable_1.setBounds(541, 10, 110, 13);
+        panel_1.add(lblModeloEditable_1);
+        
+        JLabel lblDescripcion_1 = new JLabel("Descripcion");
+        lblDescripcion_1.setBounds(10, 72, 70, 13);
+        panel_1.add(lblDescripcion_1);
+        
+        JLabel lblDescripcionEditable_1 = new JLabel("New label");
+        lblDescripcionEditable_1.setBounds(103, 72, 45, 13);
+        panel_1.add(lblDescripcionEditable_1);
+        
+        JLabel lblEstado_1 = new JLabel("Modelo");
+        lblEstado_1.setBounds(705, 10, 70, 13);
+        panel_1.add(lblEstado_1);
+        
+        JLabel lblEstadoEditable_1 = new JLabel("New label");
+        lblEstadoEditable_1.setBounds(792, 10, 110, 13);
+        panel_1.add(lblEstadoEditable_1);
+        
+        JPanel panel_2 = new JPanel();
+        panel_2.setLayout(null);
+        panel_2.setBounds(10, 430, 999, 182);
+        panelMisOrdenes.add(panel_2);
+        
+        JLabel lblId_2 = new JLabel("ID Reparacion");
+        lblId_2.setBounds(10, 10, 70, 13);
+        panel_2.add(lblId_2);
+        
+        JLabel lblIdEditable_3 = new JLabel("New label");
+        lblIdEditable_3.setBounds(103, 10, 45, 13);
+        panel_2.add(lblIdEditable_3);
+        
+        JLabel lblMatricula_2 = new JLabel("Matricula: ");
+        lblMatricula_2.setBounds(227, 10, 70, 13);
+        panel_2.add(lblMatricula_2);
+        
+        JLabel lblIdEditable_1_2 = new JLabel("New label");
+        lblIdEditable_1_2.setBounds(307, 10, 45, 13);
+        panel_2.add(lblIdEditable_1_2);
+        
+        JLabel lblModelo_2 = new JLabel("Modelo");
+        lblModelo_2.setBounds(441, 10, 70, 13);
+        panel_2.add(lblModelo_2);
+        
+        JLabel lblModeloEditable_2 = new JLabel("New label");
+        lblModeloEditable_2.setBounds(541, 10, 110, 13);
+        panel_2.add(lblModeloEditable_2);
+        
+        JLabel lblDescripcion_2 = new JLabel("Descripcion");
+        lblDescripcion_2.setBounds(10, 72, 70, 13);
+        panel_2.add(lblDescripcion_2);
+        
+        JLabel lblDescripcionEditable_2 = new JLabel("New label");
+        lblDescripcionEditable_2.setBounds(103, 72, 45, 13);
+        panel_2.add(lblDescripcionEditable_2);
+        
+        JLabel lblEstado_2 = new JLabel("Modelo");
+        lblEstado_2.setBounds(705, 10, 70, 13);
+        panel_2.add(lblEstado_2);
+        
+        JLabel lblEstadoEditable_2 = new JLabel("New label");
+        lblEstadoEditable_2.setBounds(792, 10, 110, 13);
+        panel_2.add(lblEstadoEditable_2);
+        panelPrincipal.add(panelOrdenes, "O r d e n e s");
+        
+        JButton btnNewButton = new JButton("New button");
+        btnNewButton.setBounds(214, 194, 85, 21);
+        panelOrdenes.add(btnNewButton);
+        panelPrincipal.add(panelStock, "S t o c k");
+       
+
+        // Acciones de botones
+        btnSusOrdenes.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelPrincipal, "Mis ordenes");
+                
+            }
+        });
+
+        btnOrdenes.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelPrincipal, "O r d e n e s");
+            }
+        });
+        btnStock.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelPrincipal, "S t o c k");
+            }
+        });
+
+        
+    }
+
+   
+    private void MetodoBoton(JButton button, String iconPath) {
+
+        // Establecer el icono
+        ImageIcon icon = new ImageIcon(VentanaMeca.class.getResource(iconPath));
+        Image img = icon.getImage();
+        Image resizedImg = img.getScaledInstance(26, 26, Image.SCALE_SMOOTH);  // Redimensionar el icono
+        ImageIcon resizedIcon = new ImageIcon(resizedImg);
+        button.setIcon(resizedIcon);
+
+
+        // Configurar el botón para que tenga el borde negro y no tenga el fondo verde desde el inicio
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));  // Borde negro con grosor 2
+        button.setFocusPainted(false);  // Eliminar el borde de foco
+
+        // Acción del botón
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Si ya hay un botón previamente seleccionado, quitarle el fondo verde
+                if (btnSeleccionado != null) {
+                    btnSeleccionado.setBackground(new Color (240,240,240)); // Eliminar el fondo verde del botón previamente seleccionado
+                }
+
+                // Establecer el fondo verde para el botón actual
+                button.setBackground(new Color(106,207,201)); // Fondo verde 
+
+                // Guardar el botón actual como el seleccionado
+                btnSeleccionado = button;
+            }
+        });
+    }
 }
+
+
