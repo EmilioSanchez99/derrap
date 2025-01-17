@@ -38,7 +38,6 @@ import Controlador.ConectorBD;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.MatteBorder;
 
 public class VentanaAdmin extends JFrame {
 
@@ -251,7 +250,7 @@ public class VentanaAdmin extends JFrame {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFillsViewportHeight(true);
         table.setFont(new Font("Tahoma", Font.BOLD, 12));
-        table.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(60, 47, 128)));
+        table.setBorder(new LineBorder(new Color(60, 47, 128), 2, true));
         table.setBackground(new Color(174, 232, 202));
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(56, 62, 932, 554);

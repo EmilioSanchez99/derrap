@@ -193,11 +193,11 @@ public class VentanaMeca extends JFrame {
         panel.setLayout(null);
         
         JLabel lblId = new JLabel("ID Reparacion");
-        lblId.setBounds(10, 10, 70, 13);
+        lblId.setBounds(10, 10, 93, 13);
         panel.add(lblId);
         
         JLabel lblIdEditable = new JLabel("1");
-        lblIdEditable.setBounds(103, 10, 45, 13);
+        lblIdEditable.setBounds(141, 10, 45, 13);
         panel.add(lblIdEditable);
         
         JLabel lblMatricula = new JLabel("Matricula: ");
@@ -205,7 +205,7 @@ public class VentanaMeca extends JFrame {
         panel.add(lblMatricula);
         
         JLabel lblIdEditable_1 = new JLabel("2544JJD");
-        lblIdEditable_1.setBounds(307, 10, 45, 13);
+        lblIdEditable_1.setBounds(307, 10, 83, 13);
         panel.add(lblIdEditable_1);
         
         JLabel lblModelo = new JLabel("Modelo");
@@ -238,11 +238,11 @@ public class VentanaMeca extends JFrame {
         panelMisOrdenes.add(panel_1);
         
         JLabel lblId_1 = new JLabel("ID Reparacion");
-        lblId_1.setBounds(10, 10, 70, 13);
+        lblId_1.setBounds(10, 10, 95, 13);
         panel_1.add(lblId_1);
         
         JLabel lblIdEditable_2 = new JLabel("2");
-        lblIdEditable_2.setBounds(103, 10, 45, 13);
+        lblIdEditable_2.setBounds(154, 10, 45, 13);
         panel_1.add(lblIdEditable_2);
         
         JLabel lblMatricula_1 = new JLabel("Matricula: ");
@@ -250,7 +250,7 @@ public class VentanaMeca extends JFrame {
         panel_1.add(lblMatricula_1);
         
         JLabel lblIdEditable_1_1 = new JLabel("5555AAA");
-        lblIdEditable_1_1.setBounds(307, 10, 45, 13);
+        lblIdEditable_1_1.setBounds(307, 10, 80, 13);
         panel_1.add(lblIdEditable_1_1);
         
         JLabel lblModelo_1 = new JLabel("Modelo");
@@ -266,7 +266,7 @@ public class VentanaMeca extends JFrame {
         panel_1.add(lblDescripcion_1);
         
         JLabel lblDescripcionEditable_1 = new JLabel("Limpiaparabrisas roto");
-        lblDescripcionEditable_1.setBounds(103, 72, 118, 13);
+        lblDescripcionEditable_1.setBounds(103, 72, 754, 13);
         panel_1.add(lblDescripcionEditable_1);
         
         JLabel lblEstado_1 = new JLabel("Estado");
@@ -283,11 +283,11 @@ public class VentanaMeca extends JFrame {
         panelMisOrdenes.add(panel_2);
         
         JLabel lblId_2 = new JLabel("ID Reparacion");
-        lblId_2.setBounds(10, 10, 70, 13);
+        lblId_2.setBounds(10, 10, 93, 13);
         panel_2.add(lblId_2);
         
         JLabel lblIdEditable_3 = new JLabel("3");
-        lblIdEditable_3.setBounds(103, 10, 45, 13);
+        lblIdEditable_3.setBounds(155, 10, 30, 13);
         panel_2.add(lblIdEditable_3);
         
         JLabel lblMatricula_2 = new JLabel("Matricula: ");
@@ -295,7 +295,7 @@ public class VentanaMeca extends JFrame {
         panel_2.add(lblMatricula_2);
         
         JLabel lblIdEditable_1_2 = new JLabel("8888BBB");
-        lblIdEditable_1_2.setBounds(307, 10, 45, 13);
+        lblIdEditable_1_2.setBounds(307, 10, 70, 13);
         panel_2.add(lblIdEditable_1_2);
         
         JLabel lblModelo_2 = new JLabel("Modelo");
@@ -311,7 +311,7 @@ public class VentanaMeca extends JFrame {
         panel_2.add(lblDescripcion_2);
         
         JLabel lblDescripcionEditable_2 = new JLabel("Ruedas pinchadas");
-        lblDescripcionEditable_2.setBounds(103, 72, 82, 13);
+        lblDescripcionEditable_2.setBounds(103, 72, 767, 13);
         panel_2.add(lblDescripcionEditable_2);
         
         JLabel lblEstado_2 = new JLabel("Estado");

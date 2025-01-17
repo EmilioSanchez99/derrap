@@ -119,6 +119,7 @@ public class Login extends JFrame {
 		    public void keyPressed(KeyEvent e) {
 		        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 		            conexion.comprobarUsuario(txtUsuario.getText(), txtContrasena.getText());
+		            dispose();
 		        }
 		    }
 		});
