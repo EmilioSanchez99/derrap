@@ -2,6 +2,8 @@ package Vista;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.CardLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,7 +39,7 @@ public class VentanaAdmin extends JFrame {
     private static JTable tableMecanicos;
     private static JTable tableVehiculos;
     private JButton btnAnadirCliente,btnModificarCliente,btnAnadirMecanico,btnModificarMecanico,btnAnadirVehiculo,btnModificarVehiculo;
-
+    private JButton btnSeleccionado = null;
     /**
      * Launch the application.
      */
@@ -78,22 +81,57 @@ public class VentanaAdmin extends JFrame {
         lblNewLabel.setBounds(10, 0, 126, 76);
         panelIzquierda.add(lblNewLabel);
         lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
-
-        JButton btnClientes = new JButton("Clientes");
-        btnClientes.setBounds(10, 152, 85, 21);
+        
+//BOTON CLIENTE
+        
+        JButton btnClientes = new JButton("C l i e n t e");
+        btnClientes.setHorizontalAlignment(SwingConstants.LEFT);
+        btnClientes.setForeground(new Color(0, 0, 0));
+        btnClientes.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnClientes.setBounds(0, 165, 136, 57);
+        
         panelIzquierda.add(btnClientes);
+        
+        
+        MetodoBoton(btnClientes, "/imagenes/Acliente.png");
 
-        JButton btnVehiculos = new JButton("Vehículos");
-        btnVehiculos.setBounds(10, 242, 85, 21);
+//BOTON VEHICULO
+        
+
+        JButton btnVehiculos = new JButton("V e h í c u l o");
+        btnVehiculos.setHorizontalAlignment(SwingConstants.LEFT);
+        btnVehiculos.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnVehiculos.setBounds(0, 233, 136, 57);
+        
         panelIzquierda.add(btnVehiculos);
-
-        JButton btnMecanicos = new JButton("Mecánicos");
-        btnMecanicos.setBounds(10, 352, 85, 21);
+        
+        MetodoBoton(btnVehiculos, "/imagenes/Acoche.png");
+        
+        
+        
+        //BOTON MECANICO
+        
+        JButton btnMecanicos = new JButton("M e c á n i c o");
+        btnMecanicos.setHorizontalAlignment(SwingConstants.LEFT);
+        btnMecanicos.setBounds(0, 302, 136, 57);
+        btnMecanicos.setFont(new Font("Tahoma", Font.BOLD, 13));
         panelIzquierda.add(btnMecanicos);
-
-        JButton btnCitas = new JButton("Citas");
-        btnCitas.setBounds(10, 448, 85, 21);
+        
+        MetodoBoton(btnMecanicos, "/imagenes/Amecanico.png");
+        
+        
+        
+        //BOTON CITAS
+        
+        
+        
+        JButton btnCitas = new JButton("C i t a s");
+        btnCitas.setHorizontalAlignment(SwingConstants.LEFT);
+        btnCitas.setBounds(0, 369, 136, 57);
+        btnCitas.setFont(new Font("Tahoma", Font.BOLD, 13));
         panelIzquierda.add(btnCitas);
+        
+        MetodoBoton(btnCitas, "/imagenes/Acitas.png");
 
         // Panel Principal
         JPanel panelPrincipal = new JPanel();
@@ -104,12 +142,25 @@ public class VentanaAdmin extends JFrame {
 
         // Panel Clientes
         panelClientes = new JPanel();
-        panelClientes.setBackground(Color.CYAN);
+        panelClientes.setBackground(new Color(191, 255, 244));
         panelClientes.setLayout(null);
 
-        btnAnadirCliente = new JButton("Añadir Cliente");
-        btnAnadirCliente.setBounds(706, 10, 150, 25);
-        panelClientes.add(btnAnadirCliente);
+     // Botón Añadir Cliente
+        btnAnadirCliente = new JButton("");
+        btnAnadirCliente.setBounds(923, 11, 59, 32);
+        btnAnadirCliente.setBorder(BorderFactory.createEmptyBorder());
+        btnAnadirCliente.setContentAreaFilled(false);
+
+        // Cargar la imagen original desde los recursos
+        ImageIcon originalIcon = new ImageIcon(VentanaAdmin.class.getResource("/imagenes/add.png"));
+
+        // Redimensionar la imagen a 32x30 píxeles
+        Image ogimagen = originalIcon.getImage();
+        Image escalado = ogimagen.getScaledInstance(32, 30, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(escalado);
+
+        // Asignar el icono redimensionado al botón
+        btnAnadirCliente.setIcon(resizedIcon);
 
         btnAnadirCliente.addActionListener(new ActionListener() {
             @Override
@@ -119,10 +170,19 @@ public class VentanaAdmin extends JFrame {
                 ventanaCliente.setLocationRelativeTo(null);
             }
         });
+        panelClientes.add(btnAnadirCliente);
 
-        btnModificarCliente = new JButton("Modificar Cliente");
-        btnModificarCliente.setBounds(886, 10, 150, 25);
-        panelClientes.add(btnModificarCliente);
+        // Botón Modificar Cliente
+        btnModificarCliente = new JButton("");
+        btnModificarCliente.setBounds(992, 11, 33, 33);
+        btnModificarCliente.setBorder(BorderFactory.createEmptyBorder());
+        btnModificarCliente.setContentAreaFilled(false);
+
+        ImageIcon originalIcon2 = new ImageIcon(VentanaAdmin.class.getResource("/imagenes/modify.png"));
+        Image ogimagen2 = originalIcon2.getImage();
+        Image escalado2 = ogimagen2.getScaledInstance(32, 30, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon2 = new ImageIcon(escalado2);
+        btnModificarCliente.setIcon(resizedIcon2);
 
         btnModificarCliente.addActionListener(new ActionListener() {
             @Override
@@ -139,6 +199,7 @@ public class VentanaAdmin extends JFrame {
                 }
             }
         });
+        panelClientes.add(btnModificarCliente);
 
         table = new JTable();
         JScrollPane scrollPane = new JScrollPane(table);
@@ -150,7 +211,7 @@ public class VentanaAdmin extends JFrame {
         // Panel Mecánicos
         panelMecanicos = new JPanel();
         panelMecanicos.setLayout(null);
-        panelMecanicos.setBackground(Color.PINK);
+        panelMecanicos.setBackground(new Color(191, 255, 244));
         btnAnadirMecanico = new JButton("Añadir Mecanico");
         btnAnadirMecanico.setBounds(706, 10, 150, 25);
         panelMecanicos.add(btnAnadirMecanico);
@@ -191,7 +252,7 @@ public class VentanaAdmin extends JFrame {
         // OPanel Vehiculos
        
         panelVehiculos = new JPanel();
-        panelVehiculos.setBackground(Color.YELLOW);
+        panelVehiculos.setBackground(new Color(191, 255, 244));
         panelVehiculos.setLayout(null); // Asegúrate de usar un diseño de disposición nulo si deseas posicionar componentes manualmente
 
         btnAnadirVehiculo = new JButton("Añadir Vehículo");
@@ -233,7 +294,7 @@ public class VentanaAdmin extends JFrame {
 
         panelCitas = new JPanel();
         panelCitas.add(new JLabel("Citas"));
-        panelCitas.setBackground(Color.BLUE);
+        panelCitas.setBackground(new Color(191, 255, 244));
 
 
         // Agregar paneles al principal
@@ -363,6 +424,36 @@ public class VentanaAdmin extends JFrame {
             e.printStackTrace();
         }
     }
+    private void MetodoBoton(JButton button, String iconPath) {
+        // Establecer el icono
+        ImageIcon icon = new ImageIcon(VentanaAdmin.class.getResource(iconPath));
+        Image img = icon.getImage();
+        Image resizedImg = img.getScaledInstance(26, 26, Image.SCALE_SMOOTH);  // Redimensionar el icono
+        ImageIcon resizedIcon = new ImageIcon(resizedImg);
+        button.setIcon(resizedIcon);
+
+        // Configurar el botón para que tenga el borde negro y no tenga el fondo verde desde el inicio
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));  // Borde negro con grosor 2
+        button.setFocusPainted(false);  // Eliminar el borde de foco
+
+        // Acción del botón
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Si ya hay un botón previamente seleccionado, quitarle el fondo verde
+                if (btnSeleccionado != null) {
+                    btnSeleccionado.setBackground(new Color (240,240,240)); // Eliminar el fondo verde del botón previamente seleccionado
+                }
+
+                // Establecer el fondo verde para el botón actual
+                button.setBackground(new Color(0, 255, 100)); // Fondo verde 
+
+                // Guardar el botón actual como el seleccionado
+                btnSeleccionado = button;
+            }
+        });
+    }
+
 
 }
 
