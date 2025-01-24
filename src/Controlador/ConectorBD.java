@@ -58,37 +58,34 @@ public class ConectorBD {
 	 * @return 
 	 */
 	public void comprobarUsuario(String usuario, String contrasena) {
+	    try {
+	        this.conexionCorrecta();
+	        resultado = stm.executeQuery("SELECT contrasena, tipo, nif FROM usuario WHERE usuario= '" + usuario + "'");
 
-		try {
-			this.conexionCorrecta();
-			resultado = stm.executeQuery("SELECT contrasena,tipo FROM usuario WHERE usuario= '" + usuario + "'");
-			
-			if (resultado.next()) {
+	        if (resultado.next()) {
+	            if (resultado.getString("contrasena").equals(contrasena)) {
+	                String tipoUsuario = resultado.getString("tipo");
+	                String nifUsuario = resultado.getString("nif");
 
-				if (resultado.getString("contrasena").equals(contrasena)) {
+	                if (tipoUsuario.equalsIgnoreCase("admin")) {
+	                    VentanaAdmin paginaAdmin = new VentanaAdmin();
+	                    paginaAdmin.setVisible(true);
+	                } else {
+	                    VentanaMeca paginaMecanico = new VentanaMeca(nifUsuario);
+	                    paginaMecanico.setVisible(true);
+	                }
+	            } else {
+	                JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
+	            }
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Usuario incorrecto");
+	        }
 
-					if (resultado.getString("tipo").equalsIgnoreCase("admin")) {
-						VentanaAdmin paginaAdmin = new VentanaAdmin();
-						paginaAdmin.setVisible(true);
-						
-					} else {
-						VentanaMeca paginaMecanico = new VentanaMeca();
-						paginaMecanico.setVisible(true);
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
-				}
-
-			} else {
-				JOptionPane.showMessageDialog(null, "Usuario incorrecto");
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 	public void anadirCliente(String nif,String nombre,String apellido1,String apellido2,String telefono, String email) {
         String query = "INSERT INTO cliente (nif, nombre, apellido1, apellido2, telefono, email) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = conexionCorrecta();

@@ -8,28 +8,21 @@ import java.awt.CardLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
+import Componente.CardView;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
 
 import Controlador.ConectorBD;
 
@@ -41,10 +34,11 @@ public class VentanaMeca extends JFrame {
     private JPanel panelMisOrdenes;
     private JPanel panelOrdenes;
     private JPanel panelStock;
- 
 
-    
     private JButton btnSeleccionado = null;
+
+    private String mecanicoNIF;
+
     /**
      * Launch the application.
      */
@@ -52,7 +46,7 @@ public class VentanaMeca extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    VentanaMeca frame = new VentanaMeca();
+                    VentanaMeca frame = new VentanaMeca("78945612A"); // Aquí pasa el NIF del mecánico como ejemplo
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -64,7 +58,11 @@ public class VentanaMeca extends JFrame {
     /**
      * Create the frame.
      */
-    public VentanaMeca() {
+    public VentanaMeca(String mecanicoNIF) {
+    	
+        this.mecanicoNIF = mecanicoNIF;
+        System.out.println(mecanicoNIF);
+
         setIconImage(Toolkit.getDefaultToolkit()
                 .getImage("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
         getContentPane().setBackground(new Color(191, 255, 244));
@@ -87,58 +85,42 @@ public class VentanaMeca extends JFrame {
         panelIzquierda.add(lblNewLabel);
         lblNewLabel.setIcon(new ImageIcon("C:\\Users\\emili\\eclipse-workspace\\Derrap\\src\\imagenes\\file (2).png"));
         
-//BOTON MIS ORDENES
-        
+        // BOTON MIS ORDENES
         JButton btnSusOrdenes = new JButton("Mis ordenes");
         btnSusOrdenes.setHorizontalAlignment(SwingConstants.LEFT);
         btnSusOrdenes.setForeground(new Color(0, 0, 0));
         btnSusOrdenes.setFont(new Font("Tahoma", Font.BOLD, 13));
         btnSusOrdenes.setBounds(0, 165, 136, 57);
-        
         panelIzquierda.add(btnSusOrdenes);
-        
-        
         MetodoBoton(btnSusOrdenes, "/imagenes/Acliente.png");
 
-//BOTON VEHICULO
-        
-
+        // BOTON VEHICULO
         JButton btnOrdenes = new JButton("O r d e n e s");
         btnOrdenes.setHorizontalAlignment(SwingConstants.LEFT);
         btnOrdenes.setFont(new Font("Tahoma", Font.BOLD, 13));
         btnOrdenes.setBounds(0, 233, 136, 57);
-
-      
-
         panelIzquierda.add(btnOrdenes);
-
         MetodoBoton(btnOrdenes, "/imagenes/Acoche.png");
 
-        
-        
-        
-        //BOTON MECANICO
-        
+        // BOTON MECANICO
         JButton btnStock = new JButton("S t o c k");
         btnStock.setHorizontalAlignment(SwingConstants.LEFT);
         btnStock.setBounds(0, 302, 136, 57);
         btnStock.setFont(new Font("Tahoma", Font.BOLD, 13));
         panelIzquierda.add(btnStock);
-        
         MetodoBoton(btnStock, "/imagenes/Amecanico.png");
         
         JButton btnSalir = new JButton("Cerrar Sesion");
         btnSalir.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	int seleccion=JOptionPane.showConfirmDialog(null, "Seguro que quieres salir?", "confirmar", JOptionPane.YES_NO_OPTION);
-        	if (seleccion==JOptionPane.YES_OPTION) {
-        		dispose();
-        		Login login=new Login();
-        		login.setVisible(true);
-        		login.setLocationRelativeTo(null);
-        	}
-        		
-        	}
+            public void actionPerformed(ActionEvent e) {
+                int seleccion = JOptionPane.showConfirmDialog(null, "Seguro que quieres salir?", "confirmar", JOptionPane.YES_NO_OPTION);
+                if (seleccion == JOptionPane.YES_OPTION) {
+                    dispose();
+                    Login login = new Login();
+                    login.setVisible(true);
+                    login.setLocationRelativeTo(null);
+                }
+            }
         });
         btnSalir.setHorizontalAlignment(SwingConstants.LEFT);
         btnSalir.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -152,188 +134,33 @@ public class VentanaMeca extends JFrame {
         panelPrincipal.setLayout(cardLayout);
         getContentPane().add(panelPrincipal);
 
-        // Panel Clientes
+        // Panel Mis Ordenes
         panelMisOrdenes = new JPanel();
-        panelMisOrdenes.setBackground(new Color(250,237,218));
+        panelMisOrdenes.setBackground(new Color(250, 237, 218));
         panelMisOrdenes.setLayout(null);
 
-        // Cargar la imagen original desde los recursos
-        ImageIcon originalIcon = new ImageIcon(VentanaAdmin.class.getResource("/imagenes/add.png"));
-
-        // Redimensionar la imagen a 32x30 píxeles
-        Image ogimagen = originalIcon.getImage();
-        Image escalado = ogimagen.getScaledInstance(32, 30, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(escalado);
-
-        ImageIcon originalIcon2 = new ImageIcon(VentanaAdmin.class.getResource("/imagenes/modify.png"));
-        Image ogimagen2 = originalIcon2.getImage();
-        Image escalado2 = ogimagen2.getScaledInstance(32, 30, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon2 = new ImageIcon(escalado2);
-
-        
-
-        // Panel Mecánicos
-        panelStock = new JPanel();
-        panelStock.setLayout(null);
-        panelStock.setBackground(new Color(250,237,218));
-    
+        // Panel Ordenes
         panelOrdenes = new JPanel();
-        panelOrdenes.setBackground(new Color(250,237,218));
+        panelOrdenes.setBackground(new Color(250, 237, 218));
         panelOrdenes.setLayout(null); // Asegúrate de usar un diseño de disposición nulo si deseas posicionar componentes manualmente
 
-
-
+        // Panel Stock
+        panelStock = new JPanel();
+        panelStock.setLayout(null);
+        panelStock.setBackground(new Color(250, 237, 218));
 
         // Agregar paneles al principal
         panelPrincipal.add(panelMisOrdenes, "Mis ordenes");
-        
-        JPanel panel = new JPanel();
-        panel.setBounds(10, 10, 999, 182);
-        panelMisOrdenes.add(panel);
-        panel.setLayout(null);
-        
-        JLabel lblId = new JLabel("ID Reparacion");
-        lblId.setBounds(10, 10, 93, 13);
-        panel.add(lblId);
-        
-        JLabel lblIdEditable = new JLabel("1");
-        lblIdEditable.setBounds(141, 10, 45, 13);
-        panel.add(lblIdEditable);
-        
-        JLabel lblMatricula = new JLabel("Matricula: ");
-        lblMatricula.setBounds(227, 10, 70, 13);
-        panel.add(lblMatricula);
-        
-        JLabel lblIdEditable_1 = new JLabel("2544JJD");
-        lblIdEditable_1.setBounds(307, 10, 83, 13);
-        panel.add(lblIdEditable_1);
-        
-        JLabel lblModelo = new JLabel("Modelo");
-        lblModelo.setBounds(441, 10, 70, 13);
-        panel.add(lblModelo);
-        
-        JLabel lblModeloEditable = new JLabel("Renault megane");
-        lblModeloEditable.setBounds(541, 10, 110, 13);
-        panel.add(lblModeloEditable);
-        
-        JLabel lblDescripcion = new JLabel("Descripcion");
-        lblDescripcion.setBounds(10, 72, 70, 13);
-        panel.add(lblDescripcion);
-        
-        JLabel lblDescripcionEditable = new JLabel("No arranca");
-        lblDescripcionEditable.setBounds(103, 72, 83, 13);
-        panel.add(lblDescripcionEditable);
-        
-        JLabel lblEstado = new JLabel("Estado");
-        lblEstado.setBounds(705, 10, 70, 13);
-        panel.add(lblEstado);
-        
-        JLabel lblEstadoEditable = new JLabel("En reparacion");
-        lblEstadoEditable.setBounds(792, 10, 110, 13);
-        panel.add(lblEstadoEditable);
-        
-        JPanel panel_1 = new JPanel();
-        panel_1.setLayout(null);
-        panel_1.setBounds(10, 218, 999, 182);
-        panelMisOrdenes.add(panel_1);
-        
-        JLabel lblId_1 = new JLabel("ID Reparacion");
-        lblId_1.setBounds(10, 10, 95, 13);
-        panel_1.add(lblId_1);
-        
-        JLabel lblIdEditable_2 = new JLabel("2");
-        lblIdEditable_2.setBounds(154, 10, 45, 13);
-        panel_1.add(lblIdEditable_2);
-        
-        JLabel lblMatricula_1 = new JLabel("Matricula: ");
-        lblMatricula_1.setBounds(227, 10, 70, 13);
-        panel_1.add(lblMatricula_1);
-        
-        JLabel lblIdEditable_1_1 = new JLabel("5555AAA");
-        lblIdEditable_1_1.setBounds(307, 10, 80, 13);
-        panel_1.add(lblIdEditable_1_1);
-        
-        JLabel lblModelo_1 = new JLabel("Modelo");
-        lblModelo_1.setBounds(441, 10, 70, 13);
-        panel_1.add(lblModelo_1);
-        
-        JLabel lblModeloEditable_1 = new JLabel("Opel Corsa");
-        lblModeloEditable_1.setBounds(541, 10, 110, 13);
-        panel_1.add(lblModeloEditable_1);
-        
-        JLabel lblDescripcion_1 = new JLabel("Descripcion");
-        lblDescripcion_1.setBounds(10, 72, 70, 13);
-        panel_1.add(lblDescripcion_1);
-        
-        JLabel lblDescripcionEditable_1 = new JLabel("Limpiaparabrisas roto");
-        lblDescripcionEditable_1.setBounds(103, 72, 754, 13);
-        panel_1.add(lblDescripcionEditable_1);
-        
-        JLabel lblEstado_1 = new JLabel("Estado");
-        lblEstado_1.setBounds(705, 10, 70, 13);
-        panel_1.add(lblEstado_1);
-        
-        JLabel lblEstadoEditable_1 = new JLabel("Pendiente");
-        lblEstadoEditable_1.setBounds(792, 10, 110, 13);
-        panel_1.add(lblEstadoEditable_1);
-        
-        JPanel panel_2 = new JPanel();
-        panel_2.setLayout(null);
-        panel_2.setBounds(10, 430, 999, 182);
-        panelMisOrdenes.add(panel_2);
-        
-        JLabel lblId_2 = new JLabel("ID Reparacion");
-        lblId_2.setBounds(10, 10, 93, 13);
-        panel_2.add(lblId_2);
-        
-        JLabel lblIdEditable_3 = new JLabel("3");
-        lblIdEditable_3.setBounds(155, 10, 30, 13);
-        panel_2.add(lblIdEditable_3);
-        
-        JLabel lblMatricula_2 = new JLabel("Matricula: ");
-        lblMatricula_2.setBounds(227, 10, 70, 13);
-        panel_2.add(lblMatricula_2);
-        
-        JLabel lblIdEditable_1_2 = new JLabel("8888BBB");
-        lblIdEditable_1_2.setBounds(307, 10, 70, 13);
-        panel_2.add(lblIdEditable_1_2);
-        
-        JLabel lblModelo_2 = new JLabel("Modelo");
-        lblModelo_2.setBounds(441, 10, 70, 13);
-        panel_2.add(lblModelo_2);
-        
-        JLabel lblModeloEditable_2 = new JLabel("Toyota Auris");
-        lblModeloEditable_2.setBounds(541, 10, 110, 13);
-        panel_2.add(lblModeloEditable_2);
-        
-        JLabel lblDescripcion_2 = new JLabel("Descripcion");
-        lblDescripcion_2.setBounds(10, 72, 70, 13);
-        panel_2.add(lblDescripcion_2);
-        
-        JLabel lblDescripcionEditable_2 = new JLabel("Ruedas pinchadas");
-        lblDescripcionEditable_2.setBounds(103, 72, 767, 13);
-        panel_2.add(lblDescripcionEditable_2);
-        
-        JLabel lblEstado_2 = new JLabel("Estado");
-        lblEstado_2.setBounds(705, 10, 70, 13);
-        panel_2.add(lblEstado_2);
-        
-        JLabel lblEstadoEditable_2 = new JLabel("Pendiente");
-        lblEstadoEditable_2.setBounds(792, 10, 110, 13);
-        panel_2.add(lblEstadoEditable_2);
         panelPrincipal.add(panelOrdenes, "O r d e n e s");
-        
-        JButton btnNewButton = new JButton("New button");
-        btnNewButton.setBounds(214, 194, 85, 21);
-        panelOrdenes.add(btnNewButton);
         panelPrincipal.add(panelStock, "S t o c k");
-       
+
+        // Cargar las órdenes de reparación del mecánico y agregar CardViews
+        cargarOrdenesDeReparacion(mecanicoNIF, panelMisOrdenes);
 
         // Acciones de botones
         btnSusOrdenes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panelPrincipal, "Mis ordenes");
-                
             }
         });
 
@@ -342,14 +169,55 @@ public class VentanaMeca extends JFrame {
                 cardLayout.show(panelPrincipal, "O r d e n e s");
             }
         });
+
         btnStock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panelPrincipal, "S t o c k");
             }
         });
-
-        
     }
+
+    private void cargarOrdenesDeReparacion(String mecanicoNIF, JPanel panel) {
+        try {
+            ConectorBD conector = new ConectorBD();
+            Connection conn = conector.conexionCorrecta();
+            Statement stmt = conn.createStatement();
+            String query = "SELECT * FROM orden_reparacion WHERE usuario_nif = '" + mecanicoNIF + "'";
+            ResultSet rs = stmt.executeQuery(query);
+
+            List<CardView> cardViews = new ArrayList<>();
+            while (rs.next()) {
+                String idReparacion = rs.getString("id_orden_reparacion");
+                String matricula = rs.getString("vehiculo_matricula");
+                String modelo = "Modelo"; // Aquí puedes agregar lógica para obtener el modelo del vehículo si es necesario
+                String estado = rs.getString("estado_ext");
+                String descripcion = rs.getString("descripcion");
+
+                CardView cardView = new CardView(idReparacion, matricula, modelo, estado, descripcion);
+                cardViews.add(cardView);
+            }
+
+            int yOffset = 10;
+            for (CardView cardView : cardViews) {
+                cardView.setBounds(45, yOffset, 377, 196);
+                panel.add(cardView);
+                yOffset += 216; // Espaciado entre CardViews
+            }
+
+            // Asegúrate de actualizar el panel después de agregar los CardView
+            panel.revalidate();
+            panel.repaint();
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    
 
    
     private void MetodoBoton(JButton button, String iconPath) {

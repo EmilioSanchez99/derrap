@@ -94,7 +94,7 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				conexion.comprobarUsuario(txtUsuario.getText(),txtContrasena.getText());
 				dispose();
-			}
+			}	
 			
 		});
 		
