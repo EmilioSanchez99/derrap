@@ -47,11 +47,12 @@ public class VentanaAdmin extends JFrame {
     private JPanel panelClientes;
     private JPanel panelVehiculos;
     private JPanel panelMecanicos;
-    private JPanel panelCitas;
+    private JPanel panelStock;
     private static JTable table;
     private static JTable tableMecanicos;
     private static JTable tableVehiculos;
-    private JButton btnAnadirCliente,btnModificarCliente,btnAnadirMecanico,btnModificarMecanico,btnAnadirVehiculo,btnModificarVehiculo;
+    private static JTable tableStock;
+    private JButton btnAnadirCliente,btnModificarCliente,btnAnadirMecanico,btnModificarMecanico,btnAnadirVehiculo,btnModificarVehiculo,btnAnadirStock,btnModificarStock;
     private JButton btnSeleccionado = null;
     /**
      * Launch the application.
@@ -141,7 +142,7 @@ public class VentanaAdmin extends JFrame {
         
         
         
-        JButton btnCitas = new JButton("C i t a s");
+        JButton btnCitas = new JButton("S t o c k");
         btnCitas.setHorizontalAlignment(SwingConstants.LEFT);
         btnCitas.setBounds(0, 369, 136, 57);
         btnCitas.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -373,17 +374,68 @@ public class VentanaAdmin extends JFrame {
         panelVehiculos.add(scrollPane3);
 
         loadVehiculosData();
+        
+        
+        panelStock = new JPanel();
+        panelStock.setBorder(new LineBorder(new Color(60, 47, 128), 2));
+        panelStock.setBackground(new Color(250, 237, 218));
+        panelStock.setLayout(null); // Asegúrate de usar un diseño de disposición nulo si deseas posicionar componentes manualmente
 
-        panelCitas = new JPanel();
-        panelCitas.add(new JLabel("Citas"));
-        panelCitas.setBackground(new Color(250,237,218));
+        btnAnadirStock = new JButton("");
+        btnAnadirStock.setBounds(893, 19, 52, 32);
+        btnAnadirStock.setBorder(BorderFactory.createEmptyBorder());
+        btnAnadirStock.setContentAreaFilled(false);
+        btnAnadirStock.setIcon(resizedIcon);
+        agregarEventoTeclado(btnAnadirStock, "ADD_STOCK", KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK);
+        panelStock.add(btnAnadirStock);
+        btnAnadirStock.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NuevoStock ventanaStock = new NuevoStock();
+                ventanaStock.setVisible(true);
+                ventanaStock.setLocationRelativeTo(null);
+            }
+        });
+
+        btnModificarStock = new JButton("");
+        btnModificarStock.setBounds(955, 19, 33, 33);
+        btnModificarStock.setBorder(BorderFactory.createEmptyBorder());
+        btnModificarStock.setContentAreaFilled(false);
+        btnModificarStock.setIcon(resizedIcon2);
+        panelStock.add(btnModificarStock);
+        btnModificarStock.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int stockSeleccionado = tableStock.getSelectedRow();
+                if (stockSeleccionado != -1) {
+                    Object stockId = tableStock.getValueAt(stockSeleccionado, 0);
+                    ModificarStock modificarStock = new ModificarStock(stockId);
+                    modificarStock.setVisible(true);
+                    modificarStock.setLocationRelativeTo(null);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione un ítem de stock de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        agregarEventoTeclado(btnModificarStock, "MODIFY_STOCK", KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
+
+        tableStock = new JTable();
+        tableStock.setBorder(new LineBorder(new Color(60, 47, 128)));
+        tableStock.setFont(new Font("Tahoma", Font.BOLD, 12));
+        tableStock.setFillsViewportHeight(true);
+        tableStock.setBackground(new Color(174, 232, 202));
+        JScrollPane scrollPaneStock = new JScrollPane(tableStock);
+        scrollPaneStock.setBounds(56, 62, 932, 554);
+        panelStock.add(scrollPaneStock);
+
+        loadStockData();
 
 
         // Agregar paneles al principal
         panelPrincipal.add(panelClientes, "clientes");
         panelPrincipal.add(panelVehiculos, "vehiculos");
         panelPrincipal.add(panelMecanicos, "mecanicos");
-        panelPrincipal.add(panelCitas, "citas");
+        panelPrincipal.add(panelStock, "citas");
 
         // Acciones de botones
         btnClientes.addActionListener(new ActionListener() {
@@ -549,6 +601,52 @@ public class VentanaAdmin extends JFrame {
             e.printStackTrace();
         }
     }
+    static void loadStockData() {
+        try {
+            ConectorBD conector = new ConectorBD();
+            Connection conn = conector.conexionCorrecta();
+            Statement stmt = conn.createStatement();
+            String query = "SELECT * FROM pieza";
+            ResultSet rs = stmt.executeQuery(query);
+
+            DefaultTableModel model = new DefaultTableModel(
+                    new Object[]{"ID", "Nombre", "Precio", "Cantidad"}, 0);
+
+            while (rs.next()) {
+                int id = rs.getInt("id_pieza");
+                String nombre = rs.getString("nombre_pieza");
+                double precio = rs.getDouble("precio");
+                int cantidad = rs.getInt("cantidad");
+                
+                model.addRow(new Object[]{id, nombre,precio , cantidad});
+            }
+
+            tableStock.setModel(model);
+
+            // Personalizar el renderizado del encabezado de la tabla
+            JTableHeader header = tableStock.getTableHeader();
+            header.setDefaultRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JLabel label = new JLabel(value.toString());
+                    label.setOpaque(true);
+                    label.setBackground(new Color(60, 47, 128));
+                    label.setForeground(Color.WHITE);
+                    label.setFont(new Font("Tahoma", Font.BOLD, 12));
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    
+                    return label;
+                }
+            });
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void MetodoBoton(JButton button, String iconPath) {
 
         // Establecer el icono

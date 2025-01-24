@@ -19,7 +19,7 @@ import Vista.VentanaMeca;
 public class ConectorBD {
 
 	private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
-	private static final String URL = "jdbc:mysql://localhost:3306/derrap?useSSL=false";
+	private static final String URL = "jdbc:mysql://localhost:3306/derrap2?useSSL=false";
 	private static final String USUARIO = "root";
 	private static final String CLAVE = "1234";
 
@@ -190,6 +190,39 @@ public class ConectorBD {
 	        e.printStackTrace();
 	    }
 	}
+	
+	public void anadirStock(int id, String nombre, int cantidad, double precio) {
+	    String query = "INSERT INTO pieza (id_pieza, nombre_pieza, precio, cantidad) VALUES (?, ?, ?, ?)";
+	    try (Connection connection = conexionCorrecta();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setInt(1, id);
+	        preparedStatement.setString(2, nombre);
+	        preparedStatement.setDouble(3, precio);
+	        preparedStatement.setInt(4, cantidad);
+	        
+	        preparedStatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public void actualizarStock(int id, String nombre, double precio, int cantidad) {
+	    String query = "UPDATE pieza SET nombre_pieza = ?, precio = ?, cantidad = ? WHERE id_pieza = ?";
+	    try (Connection connection = conexionCorrecta();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setString(1, nombre);
+	        preparedStatement.setDouble(2, precio);
+	        preparedStatement.setInt(3, cantidad);
+	        preparedStatement.setInt(4, id);
+	        
+	        preparedStatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
+
 
 
 
