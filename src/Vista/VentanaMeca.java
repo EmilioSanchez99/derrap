@@ -1,17 +1,22 @@
 package Vista;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import Componente.CardView;
@@ -22,7 +27,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import Controlador.ConectorBD;
 
@@ -33,11 +45,13 @@ public class VentanaMeca extends JFrame {
     private CardLayout cardLayout;
     private JPanel panelMisOrdenes;
     private JPanel panelOrdenes;
+    private static JTable tableOrdenes;
     private JPanel panelStock;
-
+    private JButton btnAsignarOrden;
     private JButton btnSeleccionado = null;
 
     private String mecanicoNIF;
+
 
     /**
      * Launch the application.
@@ -144,6 +158,90 @@ public class VentanaMeca extends JFrame {
         panelOrdenes.setBackground(new Color(250, 237, 218));
         panelOrdenes.setLayout(null); // Asegúrate de usar un diseño de disposición nulo si deseas posicionar componentes manualmente
 
+     // Botón Asignarse orden
+         btnAsignarOrden = new JButton("");
+         btnAsignarOrden.setBounds(893, 19, 52, 32);
+         btnAsignarOrden.setBorder(BorderFactory.createEmptyBorder());
+         btnAsignarOrden.setContentAreaFilled(false);
+
+        // Cargar la imagen original desde los recursos
+        ImageIcon originalIcon = new ImageIcon(VentanaMeca.class.getResource("/imagenes/iconoAsignar (2).png"));
+
+        // Redimensionar la imagen a 32x30 píxeles
+        Image ogimagen = originalIcon.getImage();
+        Image escalado = ogimagen.getScaledInstance(40,40, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(escalado);
+
+        // Asignar el icono redimensionado al botón
+        btnAsignarOrden.setIcon(resizedIcon);
+
+        btnAsignarOrden.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener la fila seleccionada en la tabla
+                int selectedRow = tableOrdenes.getSelectedRow();
+
+                // Verificar si se ha seleccionado una fila
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione una orden de reparación.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Obtener el ID de la orden de reparación seleccionada
+                String idOrden = (String) tableOrdenes.getValueAt(selectedRow, 0);
+
+                // Verificar si el mecánico ya tiene 3 órdenes asignadas
+                try {
+                    ConectorBD conector = new ConectorBD();
+                    Connection conn = conector.conexionCorrecta();
+                    Statement stmt = conn.createStatement();
+
+                    // Contar las órdenes asignadas al mecánico
+                    String countQuery = "SELECT COUNT(*) AS total FROM orden_reparacion WHERE usuario_nif = '" + mecanicoNIF + "' AND estado_ext = 'asignado' AND estado_int != 'finalizado'";
+
+                    ResultSet rs = stmt.executeQuery(countQuery);
+
+                    int totalOrdenesAsignadas = 0;
+                    if (rs.next()) {
+                        totalOrdenesAsignadas = rs.getInt("total");
+                    }
+
+                    // Verificar si el mecánico ya tiene 3 órdenes asignadas
+                    if (totalOrdenesAsignadas >= 3) {
+                        JOptionPane.showMessageDialog(null, "No se puede asignar más de 3 órdenes de reparación a un mecánico.", "Error", JOptionPane.ERROR_MESSAGE);
+                        rs.close();
+                        stmt.close();
+                        conn.close();
+                        return;
+                    }
+
+                    // Asignar la orden al mecánico logueado
+                    String updateQuery = "UPDATE orden_reparacion SET usuario_nif = '" + mecanicoNIF + "', estado_ext = 'asignado' WHERE id_orden_reparacion = '" + idOrden + "'";
+                    int rowsAffected = stmt.executeUpdate(updateQuery);
+
+                    if (rowsAffected > 0) {
+                        JOptionPane.showMessageDialog(null, "Orden de reparación asignada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                        // Actualizar la tabla de órdenes no asignadas
+                        cargarOrdenesDeReparacionNoAsignadas(panelOrdenes);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo asignar la orden de reparación.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error al asignar la orden de reparación.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+
+        panelOrdenes.add(btnAsignarOrden);
+
+
         // Panel Stock
         panelStock = new JPanel();
         panelStock.setLayout(null);
@@ -152,8 +250,24 @@ public class VentanaMeca extends JFrame {
         // Agregar paneles al principal
         panelPrincipal.add(panelMisOrdenes, "Mis ordenes");
         panelPrincipal.add(panelOrdenes, "O r d e n e s");
+        
+       
         panelPrincipal.add(panelStock, "S t o c k");
-
+        tableOrdenes = new JTable();
+        tableOrdenes.setGridColor(new Color(128, 128, 128));
+        tableOrdenes.setToolTipText("");
+        tableOrdenes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableOrdenes.setFillsViewportHeight(true);
+        tableOrdenes.setFont(new Font("Tahoma", Font.BOLD, 12));
+        tableOrdenes.setBorder(new LineBorder(new Color(60, 47, 128), 2, true));
+        tableOrdenes.setBackground(new Color(174, 232, 202));
+        JScrollPane scrollPaneOrdenes = new JScrollPane(tableOrdenes);
+        scrollPaneOrdenes.setBounds(56, 62, 932, 554);
+        panelOrdenes.add(scrollPaneOrdenes);
+        
+       
+        
+        
         // Cargar las órdenes de reparación del mecánico y agregar CardViews
         cargarOrdenesDeReparacion(mecanicoNIF, panelMisOrdenes);
 
@@ -161,12 +275,14 @@ public class VentanaMeca extends JFrame {
         btnSusOrdenes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panelPrincipal, "Mis ordenes");
+                cargarOrdenesDeReparacion(mecanicoNIF, panelMisOrdenes);
             }
         });
 
         btnOrdenes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panelPrincipal, "O r d e n e s");
+                cargarOrdenesDeReparacionNoAsignadas(panelOrdenes);
             }
         });
 
@@ -177,12 +293,14 @@ public class VentanaMeca extends JFrame {
         });
     }
 
-    private void cargarOrdenesDeReparacion(String mecanicoNIF, JPanel panel) {
+    public void cargarOrdenesDeReparacion(String mecanicoNIF, JPanel panel) {
         try {
+        	panel.removeAll();
             ConectorBD conector = new ConectorBD();
             Connection conn = conector.conexionCorrecta();
             Statement stmt = conn.createStatement();
-            String query = "SELECT * FROM orden_reparacion WHERE usuario_nif = '" + mecanicoNIF + "'";
+            String query = "SELECT * FROM orden_reparacion WHERE usuario_nif = '" + mecanicoNIF + "' AND estado_int != 'finalizado'";
+
             ResultSet rs = stmt.executeQuery(query);
 
             List<CardView> cardViews = new ArrayList<>();
@@ -190,16 +308,16 @@ public class VentanaMeca extends JFrame {
                 String idReparacion = rs.getString("id_orden_reparacion");
                 String matricula = rs.getString("vehiculo_matricula");
                 String modelo = "Modelo"; // Aquí puedes agregar lógica para obtener el modelo del vehículo si es necesario
-                String estado = rs.getString("estado_ext");
+                String estado = "En diagnostico";
                 String descripcion = rs.getString("descripcion");
 
-                CardView cardView = new CardView(idReparacion, matricula, modelo, estado, descripcion);
+                CardView cardView = new CardView(idReparacion, matricula, modelo, estado, descripcion, panel,mecanicoNIF,this);
                 cardViews.add(cardView);
             }
 
             int yOffset = 10;
             for (CardView cardView : cardViews) {
-                cardView.setBounds(45, yOffset, 377, 196);
+                cardView.setBounds(45, yOffset,450,200);
                 panel.add(cardView);
                 yOffset += 216; // Espaciado entre CardViews
             }
@@ -218,6 +336,68 @@ public class VentanaMeca extends JFrame {
 
 
     
+    private void cargarOrdenesDeReparacionNoAsignadas(JPanel panel) {
+        try {
+            ConectorBD conector = new ConectorBD();
+            Connection conn = conector.conexionCorrecta();
+            Statement stmt = conn.createStatement();
+            String query = "SELECT * FROM orden_reparacion WHERE estado_ext = 'no_asignado'";
+            System.out.println("Ejecutando consulta: " + query);
+            ResultSet rs = stmt.executeQuery(query);
+
+            String[] columnNames = {"ID Reparación", "Fecha Entrada", "Fecha Salida", "Descripción", "Estado Interno", "Estado Externo", "Usuario NIF", "Vehículo Matrícula"};
+            DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+             
+
+            
+            while (rs.next()) {
+                String idReparacion = rs.getString("id_orden_reparacion");
+                Date fechaEntrada = rs.getDate("fecha_entrada");
+                Date fechaSalida = rs.getDate("fecha_salida");
+                String descripcion = rs.getString("descripcion");
+                String estadoInt = rs.getString("estado_int");
+                String estadoExt = rs.getString("estado_ext");
+                String usuarioNIF = rs.getString("usuario_nif");
+                String vehiculoMatricula = rs.getString("vehiculo_matricula");
+                System.out.println("Orden encontrada: " + idReparacion);
+
+                Object[] row = {idReparacion, fechaEntrada, fechaSalida, descripcion, estadoInt, estadoExt, usuarioNIF, vehiculoMatricula};
+                tableModel.addRow(row);
+                System.out.println("hvbjnkm");
+              
+            }
+            tableOrdenes.setModel(tableModel);
+
+            
+
+            // Personalización de la cabecera de la tabla
+            JTableHeader header = tableOrdenes.getTableHeader();
+            header.setDefaultRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JLabel label = new JLabel(value.toString());
+                    label.setOpaque(true);
+                    label.setBackground(new Color(60, 47, 128));
+                    label.setForeground(Color.WHITE);
+                    label.setFont(new Font("Tahoma", Font.BOLD, 12));
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    return label;
+                }
+            });
+
+           
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
    
     private void MetodoBoton(JButton button, String iconPath) {

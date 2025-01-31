@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -217,6 +218,28 @@ public class ConectorBD {
 	        e.printStackTrace();
 	    }
 	}
+	
+	public void finalizarOrdenReparacion(String idReparacion, JLabel lblEstado) {
+	    try {
+	        ConectorBD conector = new ConectorBD();
+	        Connection conn = conector.conexionCorrecta();
+	        String updateQuery = "UPDATE orden_reparacion SET estado_int = 'finalizado' WHERE id_orden_reparacion = ?";
+	        PreparedStatement pstmt = conn.prepareStatement(updateQuery);
+	        pstmt.setString(1, idReparacion);
+	        int rowsAffected = pstmt.executeUpdate();
+	        if (rowsAffected > 0) {
+	            System.out.println("Orden de reparación finalizada: " + idReparacion);
+	            lblEstado.setText("Estado: finalizado"); // Actualizar la etiqueta del estado
+	        } else {
+	            System.out.println("No se pudo finalizar la orden de reparación: " + idReparacion);
+	        }
+	        pstmt.close();
+	        conn.close();
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	    }
+	}
+
 
 
 
