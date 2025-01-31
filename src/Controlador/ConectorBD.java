@@ -239,6 +239,53 @@ public class ConectorBD {
 	        ex.printStackTrace();
 	    }
 	}
+	
+	
+	public void anadirRecambioCompleto(String idReparacion, String nombrePieza, int cantidad) throws SQLException {
+		ConectorBD conector = new ConectorBD();
+        Connection conn = conector.conexionCorrecta();
+		
+	    String obtenerIdPiezaQuery = "SELECT id_pieza FROM pieza WHERE nombre_pieza = ?";
+	    String insertarRecambioQuery = "INSERT INTO recambio (stock_id_pieza, orden_reparacion_id_orden_reparacion, cantidad) VALUES (?, ?, ?)";
+	    String updatePiezaQuery = "UPDATE pieza SET cantidad = cantidad - ? WHERE id_pieza = ?";
+
+	    try (PreparedStatement obtenerIdPiezaStmt = conn.prepareStatement(obtenerIdPiezaQuery)) {
+	        // Obtener el id de la pieza por su nombre
+	        obtenerIdPiezaStmt.setString(1, nombrePieza);
+	        try (ResultSet resultSet = obtenerIdPiezaStmt.executeQuery()) {
+	            if (resultSet.next()) {
+	                int idPieza = resultSet.getInt("id_pieza");
+
+	                // Insertar el recambio en la base de datos
+	                try (PreparedStatement insertarRecambioStmt = conn.prepareStatement(insertarRecambioQuery)) {
+	                    insertarRecambioStmt.setInt(1, idPieza);
+	                    insertarRecambioStmt.setString(2, idReparacion);
+	                    insertarRecambioStmt.setInt(3, cantidad);
+	                    insertarRecambioStmt.executeUpdate();
+	                }
+
+	                // Actualizar la cantidad de la pieza en la base de datos
+	                try (PreparedStatement updatePiezaStmt = conn.prepareStatement(updatePiezaQuery)) {
+	                    updatePiezaStmt.setInt(1, cantidad);
+	                    updatePiezaStmt.setInt(2, idPieza);
+	                    updatePiezaStmt.executeUpdate();
+	                }
+	            } else {
+	                throw new SQLException("Pieza no encontrada: " + nombrePieza);
+	            }
+	        }
+	    }
+	}
+
+	    
+	    
+	    
+	    
+	    
+}	   
+
+	
+
 
 
 
@@ -251,5 +298,5 @@ public class ConectorBD {
 
 
 	
-}
+
 

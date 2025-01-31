@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import Controlador.ConectorBD;
+import Vista.AnadirPieza;
 import Vista.VentanaMeca;
 
 import javax.swing.BorderFactory;
@@ -26,10 +27,10 @@ public class CardView extends JPanel {
     private JLabel lblMatricula;
     private JLabel lblModelo;
     private JLabel lblEstado;
-    private JLabel lblEnReparacion;
+    private JLabel lblPiezas;
     private JLabel lblDescripcion;
 
-    private JButton btnFinalizarOrden,btnDesasignarOrden; // Botón para finalizar la orden
+    private JButton btnFinalizarOrden,btnDesasignarOrden,btnAnadirPieza; 
     private JPanel parentPanel; // Panel padre donde se agregan los CardViews
     private boolean isExpanded = false;
     private String idReparacion;
@@ -72,16 +73,16 @@ public class CardView extends JPanel {
         lblModelo.setBounds(250, 40, 200, 25);
         add(lblModelo);
 
-        lblEnReparacion = new JLabel("En Reparación:");
-        lblEnReparacion.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblEnReparacion.setForeground(new Color(60, 47, 128));
-        lblEnReparacion.setBounds(10, 70, 200, 25);
-        add(lblEnReparacion);
+        lblPiezas = new JLabel("Piezas: ");
+        lblPiezas.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblPiezas.setForeground(new Color(60, 47, 128));
+        lblPiezas.setBounds(10, 133, 200, 25);
+        add(lblPiezas);
 
         lblDescripcion = new JLabel("<html>Descripción: " + descripcion + "</html>");
         lblDescripcion.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblDescripcion.setForeground(new Color(60, 47, 128));
-        lblDescripcion.setBounds(10, 100, 440, 50);
+        lblDescripcion.setBounds(10, 63, 440, 50);
         add(lblDescripcion);
 
         // Crear el botón de finalizar orden
@@ -109,6 +110,24 @@ public class CardView extends JPanel {
         btnDesasignarOrden.setVisible(false); 
         add(btnDesasignarOrden);
         
+        //crea el boton para anadir pieza
+        btnAnadirPieza=new JButton("Anadir Pieza");
+        btnAnadirPieza.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		AnadirPieza ventanaAnadirPieza=new AnadirPieza(idReparacion);
+        		ventanaAnadirPieza.setVisible(true);
+        		ventanaAnadirPieza.setLocationRelativeTo(null);
+        	}
+        });
+        btnAnadirPieza.setBounds(450, 125, 150, 30); // Ajusta las coordenadas para que aparezca a la derecha
+        btnAnadirPieza.setBackground(new Color(255, 69, 58)); // Color rojo para el botón
+        btnAnadirPieza.setForeground(Color.WHITE); // Texto en blanco
+        btnAnadirPieza.setFocusPainted(false); // Eliminar el borde de foco
+        btnAnadirPieza.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Borde negro
+        btnAnadirPieza.setVisible(false); 
+        add(btnAnadirPieza);
+        
+        
         
         // Agregar un MouseListener para mostrar el botón y ajustar el tamaño del CardView al hacer clic
         addMouseListener(new MouseAdapter() {
@@ -118,11 +137,13 @@ public class CardView extends JPanel {
                     setSize(getWidth() + 200, getHeight()); // Aumentar el tamaño del CardView
                     btnFinalizarOrden.setVisible(true); // Mostrar el botón
                     btnDesasignarOrden.setVisible(true);
+                    btnAnadirPieza.setVisible(true);
                     isExpanded = true;
                 } else {
                     setSize(getWidth() - 200, getHeight()); // Restaurar el tamaño original del CardView
                     btnFinalizarOrden.setVisible(false); 
                     btnDesasignarOrden.setVisible(false);// Ocultar el botón
+                    btnAnadirPieza.setVisible(false);
                     isExpanded = false;
                 }
                 revalidate(); // Actualizar el panel
