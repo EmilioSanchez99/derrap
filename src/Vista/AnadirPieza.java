@@ -12,6 +12,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
+import Componente.CardView;
 import Controlador.ConectorBD;
 
 import java.awt.event.ActionListener;
@@ -22,13 +23,13 @@ public class AnadirPieza extends JDialog {
 
     private static final long serialVersionUID = 1L;
     private final JPanel contentPanel = new JPanel();
-
+    
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
         try {
-            AnadirPieza dialog = new AnadirPieza(null);
+            AnadirPieza dialog = new AnadirPieza(null,null);
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
         } catch (Exception e) {
@@ -39,7 +40,7 @@ public class AnadirPieza extends JDialog {
     /**
      * Create the dialog.
      */
-    public AnadirPieza(String idReparacion) {
+    public AnadirPieza(String idReparacion, CardView cv) {
         setBounds(100, 100, 450, 300);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -88,6 +89,8 @@ public class AnadirPieza extends JDialog {
             	        int cantidad = (Integer) cantidadSpinner.getValue();
             	        System.out.println(cantidad);
             	         ConectorBD conector=new ConectorBD();
+            	         cv.cargarPiezas();
+            	         dispose();
             	         try {
 							conector.anadirRecambioCompleto(idReparacion, nombrePieza, cantidad);
 						} catch (SQLException e1) {

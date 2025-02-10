@@ -51,6 +51,7 @@ public class VentanaMeca extends JFrame {
     private JButton btnSeleccionado = null;
 
     private String mecanicoNIF;
+    private static JTable tableStock;
 
 
     /**
@@ -240,7 +241,7 @@ public class VentanaMeca extends JFrame {
 
 
         panelOrdenes.add(btnAsignarOrden);
-
+        MetodoBoton(btnSalir, "/imagenes/Aexit.png");
 
         // Panel Stock
         panelStock = new JPanel();
@@ -265,6 +266,20 @@ public class VentanaMeca extends JFrame {
         scrollPaneOrdenes.setBounds(56, 62, 932, 554);
         panelOrdenes.add(scrollPaneOrdenes);
         
+        
+        //panel Stock
+        
+        tableStock = new JTable();
+        tableStock.setGridColor(new Color(128, 128, 128));
+        tableStock.setToolTipText("");
+        tableStock.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableStock.setFillsViewportHeight(true);
+        tableStock.setFont(new Font("Tahoma", Font.BOLD, 12));
+        tableStock.setBorder(new LineBorder(new Color(60, 47, 128), 2, true));
+        tableStock.setBackground(new Color(174, 232, 202));
+        JScrollPane scrollPaneStock = new JScrollPane(tableStock);
+        scrollPaneStock.setBounds(56, 62, 932, 554);
+        panelStock.add(scrollPaneStock);
        
         
         
@@ -289,6 +304,7 @@ public class VentanaMeca extends JFrame {
         btnStock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panelPrincipal, "S t o c k");
+                loadStockData();
             }
         });
     }
@@ -431,6 +447,58 @@ public class VentanaMeca extends JFrame {
             }
         });
     }
+    
+    static void loadStockData() {
+        try {
+            ConectorBD conector = new ConectorBD();
+            Connection conn = conector.conexionCorrecta();
+            Statement stmt = conn.createStatement();
+            String query = "SELECT * FROM pieza";
+            ResultSet rs = stmt.executeQuery(query);
+
+            DefaultTableModel model = new DefaultTableModel(
+                    new Object[]{"ID", "Nombre", "Precio", "Cantidad"}, 0);
+
+            while (rs.next()) {
+                int id = rs.getInt("id_pieza");
+                String nombre = rs.getString("nombre_pieza");
+                double precio = rs.getDouble("precio");
+                int cantidad = rs.getInt("cantidad");
+                
+                model.addRow(new Object[]{id, nombre,precio , cantidad});
+            }
+
+            try {
+				tableStock.setModel(model);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+            // Personalizar el renderizado del encabezado de la tabla
+            JTableHeader header = tableStock.getTableHeader();
+            header.setDefaultRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JLabel label = new JLabel(value.toString());
+                    label.setOpaque(true);
+                    label.setBackground(new Color(60, 47, 128));
+                    label.setForeground(Color.WHITE);
+                    label.setFont(new Font("Tahoma", Font.BOLD, 12));
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    
+                    return label;
+                }
+            });
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 

@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
 import Controlador.ConectorBD;
@@ -21,6 +22,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JTextArea;
 
 public class CardView extends JPanel {
     private JLabel lblIdReparacion;
@@ -36,6 +41,7 @@ public class CardView extends JPanel {
     private String idReparacion;
     private String mecanicoNIF;
     private VentanaMeca ventanaMecanico;
+    private JScrollPane scrollPane;
 
     public CardView(String idReparacion, String matricula, String modelo, String estado, String descripcion, JPanel parentPanel, String mecanicoNIF, VentanaMeca ventanaMecanico) {
         this.idReparacion = idReparacion;
@@ -76,8 +82,10 @@ public class CardView extends JPanel {
         lblPiezas = new JLabel("Piezas: ");
         lblPiezas.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblPiezas.setForeground(new Color(60, 47, 128));
-        lblPiezas.setBounds(10, 133, 200, 25);
+        lblPiezas.setBounds(10, 123, 430, 50);
         add(lblPiezas);
+        
+        scrollPane=new JScrollPane(lblPiezas);
 
         lblDescripcion = new JLabel("<html>Descripción: " + descripcion + "</html>");
         lblDescripcion.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -85,6 +93,7 @@ public class CardView extends JPanel {
         lblDescripcion.setBounds(10, 63, 440, 50);
         add(lblDescripcion);
 
+        
         // Crear el botón de finalizar orden
         btnFinalizarOrden = new JButton("Finalizar Orden");
         btnFinalizarOrden.setBounds(450, 25, 150, 30); // Ajusta las coordenadas para que aparezca a la derecha
@@ -114,7 +123,7 @@ public class CardView extends JPanel {
         btnAnadirPieza=new JButton("Anadir Pieza");
         btnAnadirPieza.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		AnadirPieza ventanaAnadirPieza=new AnadirPieza(idReparacion);
+        		AnadirPieza ventanaAnadirPieza=new AnadirPieza(idReparacion,CardView.this);
         		ventanaAnadirPieza.setVisible(true);
         		ventanaAnadirPieza.setLocationRelativeTo(null);
         	}
@@ -157,7 +166,14 @@ public class CardView extends JPanel {
                 finalizarOrdenReparacion(idReparacion); // Llamar al método para actualizar el estado
             }
         });
+        cargarPiezas();
     }
+
+   
+
+	
+
+
 
     private void finalizarOrdenReparacion(String idReparacion) {
         try {
@@ -167,6 +183,7 @@ public class CardView extends JPanel {
             PreparedStatement pstmt = conn.prepareStatement(updateQuery);
             pstmt.setString(1, idReparacion);
             int rowsAffected = pstmt.executeUpdate();
+            
             if (rowsAffected > 0) {
                 System.out.println("Orden de reparación finalizada: " + idReparacion);
                 lblEstado.setText("Estado: finalizado"); // Actualizar la etiqueta del estado
@@ -174,15 +191,52 @@ public class CardView extends JPanel {
                 parentPanel.revalidate(); // Actualizar el panel
                 parentPanel.repaint(); // Reflejar los cambios visuales
                 ventanaMecanico.cargarOrdenesDeReparacion(mecanicoNIF, parentPanel); // Recargar el panel
+
+                // Insertar datos en la tabla factura
+                String insertFacturaQuery = "INSERT INTO factura (precio, metodo_pago, orden_reparacion_id_orden_reparacion) VALUES (?, ?, ?)";
+                PreparedStatement pstmtFactura = conn.prepareStatement(insertFacturaQuery);
+
+                // Obtener precio, cantidad y método de pago utilizando la consulta proporcionada
+                String consulta = "SELECT p.precio, r.cantidad, r.orden_reparacion_id_orden_reparacion " +
+                                  "FROM recambio r " +
+                                  "JOIN pieza p ON r.stock_id_pieza = p.id_pieza " +
+                                  "JOIN orden_reparacion o ON r.orden_reparacion_id_orden_reparacion = o.id_orden_reparacion " +
+                                  "WHERE o.id_orden_reparacion = ? AND o.estado_int = 'finalizado'";
+                PreparedStatement pstmtConsulta = conn.prepareStatement(consulta);
+                pstmtConsulta.setString(1, idReparacion);
+                ResultSet rs = pstmtConsulta.executeQuery();
+
+                if (rs.next()) {
+                    double precio = rs.getDouble("precio") * rs.getInt("cantidad")+50; // Precio total de las piezas + mano de obra
+                    String metodoPago = obtenerMetodoPagoOrdenReparacion(idReparacion); // Método de pago
+                    int ordenReparacionId = rs.getInt("orden_reparacion_id_orden_reparacion");
+
+                    pstmtFactura.setDouble(1, precio);
+                    pstmtFactura.setString(2, metodoPago);
+                    pstmtFactura.setInt(3, ordenReparacionId);
+                    pstmtFactura.executeUpdate();
+                }
+
+                rs.close();
+                pstmtConsulta.close();
+                pstmtFactura.close();
+
             } else {
                 System.out.println("No se pudo finalizar la orden de reparación: " + idReparacion);
             }
+            
             pstmt.close();
             conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
+    private String obtenerMetodoPagoOrdenReparacion(String idReparacion) {
+        // Implementa este método para obtener el método de pago de la orden de reparación
+        return "unico"; // Ejemplo de valor predeterminado
+    }
+
     
     private void desasignarOrdenReparacion(String idReparacion) {
         try {
@@ -221,4 +275,54 @@ public class CardView extends JPanel {
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, width, height);
     }
+    
+    public void cargarPiezas() {
+        ConectorBD conector = new ConectorBD();
+        Connection conn = conector.conexionCorrecta();
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = conn.createStatement();
+            String consulta = "SELECT r.cantidad, p.nombre_pieza FROM recambio r JOIN pieza p ON r.stock_id_pieza = p.id_pieza WHERE orden_reparacion_id_orden_reparacion = " + idReparacion;
+            rs = stmt.executeQuery(consulta);
+
+            StringBuilder piezasInfo = new StringBuilder("<html>Piezas:<br>"); // Usamos HTML para formatear el texto
+
+            while (rs.next()) {
+                String cantidad = rs.getString("cantidad");
+                String nombre = rs.getString("nombre_pieza");
+                piezasInfo.append(cantidad).append(" x ").append(nombre).append("<br>"); // Añadimos cada pieza en una nueva línea
+            }
+
+            piezasInfo.append("</html>"); // Cerramos el tag HTML
+
+            lblPiezas.setText(piezasInfo.toString()); // Establecemos el texto en el JLabel
+
+            // Establecer los colores de fondo del JLabel y JScrollPane como transparentes
+            lblPiezas.setOpaque(false);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setOpaque(false);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder()); // Eliminar el borde del JScrollPane
+            
+            // Añadir el JScrollPane con el JLabel al panel
+            scrollPane.setViewportView(lblPiezas);
+            scrollPane.setBounds(10, 123, 430, 50); // Ajusta las coordenadas y tamaño del JScrollPane
+            add(scrollPane);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Cerramos los recursos
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }

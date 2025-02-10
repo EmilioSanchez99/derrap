@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.AbstractAction;
@@ -48,12 +50,14 @@ public class VentanaAdmin extends JFrame {
     private JPanel panelVehiculos;
     private JPanel panelMecanicos;
     private JPanel panelStock;
+    private JPanel panelFacturas;
     private static JTable table;
     private static JTable tableMecanicos;
     private static JTable tableVehiculos;
     private static JTable tableStock;
     private JButton btnAnadirCliente,btnModificarCliente,btnAnadirMecanico,btnModificarMecanico,btnAnadirVehiculo,btnModificarVehiculo,btnAnadirStock,btnModificarStock;
     private JButton btnSeleccionado = null;
+    private static JTable tableFacturas;
     /**
      * Launch the application.
      */
@@ -168,7 +172,16 @@ public class VentanaAdmin extends JFrame {
         btnSalir.setFont(new Font("Tahoma", Font.BOLD, 13));
         btnSalir.setBounds(0, 597, 136, 57);
         panelIzquierda.add(btnSalir);
-
+        
+        
+        JButton btnFacturas = new JButton("F a c t u r a");
+        btnFacturas.setHorizontalAlignment(SwingConstants.LEFT);
+        btnFacturas.setFont(new Font("Tahoma", Font.BOLD, 13));
+        btnFacturas.setBounds(0, 446, 136, 57);
+        panelIzquierda.add(btnFacturas);
+        
+        MetodoBoton(btnFacturas, "/imagenes/Afactura.png");
+        MetodoBoton(btnSalir, "/imagenes/Aexit.png");
         // Panel Principal
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setBounds(138, 0, 1046, 700);
@@ -429,14 +442,24 @@ public class VentanaAdmin extends JFrame {
         panelStock.add(scrollPaneStock);
 
         loadStockData();
-
+        
+        //panel facturas
+        setupFacturasPanel();
+  
+       
 
         // Agregar paneles al principal
         panelPrincipal.add(panelClientes, "clientes");
         panelPrincipal.add(panelVehiculos, "vehiculos");
         panelPrincipal.add(panelMecanicos, "mecanicos");
         panelPrincipal.add(panelStock, "citas");
-
+        panelPrincipal.add(panelFacturas,"facturas");
+        
+        
+        
+        
+        
+   
         // Acciones de botones
         btnClientes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -461,6 +484,13 @@ public class VentanaAdmin extends JFrame {
         btnCitas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panelPrincipal, "citas");
+            }
+        });
+        btnFacturas.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelPrincipal, "facturas");
+                cargarFacturas();
+                
             }
         });
     }
@@ -693,6 +723,194 @@ public class VentanaAdmin extends JFrame {
     		
     	});
     }
+    
+ // Método para inicializar el panel de facturas
+    private void setupFacturasPanel() {
+        panelFacturas = new JPanel();
+        panelFacturas.setBorder(new LineBorder(new Color(60, 47, 128), 2));
+        panelFacturas.setBackground(new Color(250, 237, 218));
+        panelFacturas.setLayout(null);
+
+        tableFacturas = new JTable();
+        tableFacturas.setFont(new Font("Tahoma", Font.BOLD, 12));
+        tableFacturas.setFillsViewportHeight(true);
+        tableFacturas.setBorder(new LineBorder(new Color(60, 47, 128)));
+        tableFacturas.setBackground(new Color(174, 232, 202));
+
+        JScrollPane scrollPaneFacturas = new JScrollPane(tableFacturas);
+        scrollPaneFacturas.setBounds(45, 59, 932, 554);
+        panelFacturas.add(scrollPaneFacturas);
+    }
+    
+
+ /// Método para cargar las facturas en la tabla
+    private void cargarFacturas() {
+        ConectorBD conector = new ConectorBD();
+        Connection conexion = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conexion = conector.conexionCorrecta();
+            stmt = conexion.createStatement();
+
+            String consulta = "SELECT id_factura, precio, metodo_pago, orden_reparacion_id_orden_reparacion FROM factura";
+            rs = stmt.executeQuery(consulta);
+
+            DefaultTableModel model = new DefaultTableModel(
+                new Object[]{"ID Factura", "Precio Total", "Método Pago", "Orden Reparación"}, 0);
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("id_factura"),
+                    rs.getDouble("precio"),
+                    rs.getString("metodo_pago"),
+                    rs.getInt("orden_reparacion_id_orden_reparacion")
+                });
+            }
+
+            tableFacturas.setModel(model);
+            setupTableHeader(tableFacturas);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Error al cargar facturas: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Método para configurar el encabezado de la tabla
+    private void setupTableHeader(JTable table) {
+        JTableHeader header = table.getTableHeader();
+        header.setDefaultRenderer(new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, 
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = new JLabel(value.toString());
+                label.setOpaque(true);
+                label.setBackground(new Color(60, 47, 128));
+                label.setForeground(Color.WHITE);
+                label.setFont(new Font("Tahoma", Font.BOLD, 12));
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                return label;
+            }
+        });
+    }
+ 
+
+
+//    private void cargarFacturas() {
+//        ConectorBD conector = new ConectorBD();
+//        Connection conexion = null;
+//        Statement stmt = null;
+//        ResultSet rs = null;
+//        PreparedStatement pstmt = null;
+//
+//        try {
+//            conexion = conector.conexionCorrecta();
+//            stmt = conexion.createStatement();
+//
+//            // Consulta para obtener los datos de las órdenes finalizadas
+//            String consulta = "SELECT p.precio, r.cantidad, r.orden_reparacion_id_orden_reparacion " +
+//                              "FROM recambio r " +
+//                              "JOIN pieza p ON r.stock_id_pieza = p.id_pieza " +
+//                              "JOIN orden_reparacion o ON r.orden_reparacion_id_orden_reparacion = o.id_orden_reparacion " +
+//                              "WHERE o.estado_int = 'finalizado'";
+//            rs = stmt.executeQuery(consulta);
+//
+//            // Crear el modelo de la tabla
+//            String[] columnNames = {"Precio", "Método de Pago", "Orden de Reparación"};
+//            DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+//
+//            // Insertar datos en la tabla factura y en el modelo de la tabla
+//            String insertQuery = "INSERT INTO factura (precio, metodo_pago, orden_reparacion_id_orden_reparacion) VALUES (?, ?, ?)";
+//            try{
+//            	pstmt = conexion.prepareStatement(insertQuery);
+//            }catch(SQLException e) {
+//            	e.printStackTrace();
+//            }
+//
+//            while (rs.next()) {
+//                double precio = rs.getDouble("precio");
+//                int cantidad = rs.getInt("cantidad");
+//                int ordenReparacionId = rs.getInt("orden_reparacion_id_orden_reparacion");
+//
+//                // Calcular el precio total
+//                double precioTotal = precio * cantidad;
+//
+//                // Verificar si la factura ya existe para evitar duplicados
+//                String verificarFactura = "SELECT * FROM factura WHERE orden_reparacion_id_orden_reparacion = ?";
+//                PreparedStatement verificarStmt = conexion.prepareStatement(verificarFactura);
+//                verificarStmt.setInt(1, ordenReparacionId);
+//                ResultSet facturaExistente = verificarStmt.executeQuery();
+//
+//                if (!facturaExistente.next()) { // Si no existe, insertar
+//                    pstmt.setDouble(1, precioTotal);
+//                    pstmt.setString(2, "unico"); // Método de pago por defecto
+//                    pstmt.setInt(3, ordenReparacionId);
+//                    pstmt.executeUpdate();
+//                }
+//
+//                // Añadir los datos a la tabla
+//                Object[] rowData = {precioTotal, "unico", ordenReparacionId};
+//                tableModel.addRow(rowData);
+//
+//                // Cerrar recursos de verificación
+//                facturaExistente.close();
+//                verificarStmt.close();
+//            }
+//
+//            // Asignar el modelo a la tabla
+//            tableFacturas.setModel(tableModel);
+//
+//            // Personalizar el renderizado del encabezado de la tabla
+//            JTableHeader header = tableFacturas.getTableHeader();
+//            header.setDefaultRenderer(new TableCellRenderer() {
+//                @Override
+//                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//                    JLabel label = new JLabel(value.toString());
+//                    label.setOpaque(true);
+//                    label.setBackground(new Color(60, 47, 128));
+//                    label.setForeground(Color.WHITE);
+//                    label.setFont(new Font("Tahoma", Font.BOLD, 12));
+//                    label.setHorizontalAlignment(SwingConstants.CENTER);
+//                    return label;
+//                }
+//            });
+//
+//            // Añadir el JScrollPane al panel de facturas
+//            JScrollPane scrollPane = new JScrollPane(tableFacturas);
+//            scrollPane.setBounds(45, 59, 932, 554); // Ajustar coordenadas y tamaño
+//            panelFacturas.add(scrollPane);
+//
+//            System.out.println("Datos cargados correctamente en la tabla de facturas.");
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            JOptionPane.showMessageDialog(this, "Error al cargar las facturas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        } finally {
+//            // Cerrar recursos
+//            try {
+//                if (rs != null) rs.close();
+//                if (stmt != null) stmt.close();
+//                if (pstmt != null) pstmt.close();
+//                if (conexion != null) conexion.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//    
+    
 }
 
 
